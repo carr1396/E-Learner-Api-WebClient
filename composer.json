@@ -1,0 +1,26 @@
+{
+    "name": "spider/elearner",
+    "description": "elearner",
+    "require": {
+        "slim/slim": "^3.3",
+        "monolog/monolog": "^1.17",
+        "slim/php-view": "^2.1",
+        "slim/csrf": "^0.6.0",
+        "illuminate/database": "^5.2",
+        "illuminate/events": "^5.2",
+        "alexgarrett/violin": "^2.2",
+        "slim/flash": "^0.1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "carr1396",
+            "email": "faridah6931@live.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [ "app/models" ],
+        "psr-4": {"Learner\\": "app/"},
+        "files":["app/helper.php"]
+    }
+}
