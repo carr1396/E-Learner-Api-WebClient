@@ -10,11 +10,20 @@ class User extends Eloquent {
 	 */
 	protected $table = 'users';
 
-	protected $fillable=['username', 'email'];
+	protected $fillable =['username', 'email'];
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password');
+	protected $dates =['last_login_at'];
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		'password', 'remember_token',
+	];
+
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="E-Leaner Website">
+  <meta name="author" content="Spider">
+  <title>E-Leaner <?php echo $title; ?></title>
+  <link rel="icon" href="favicon.ico" type="image/ico">
+  <style>
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: table;
+    font-weight: 100;
+    font-family: monospace;
+  }
+
+  .container {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .content {
+    text-align: center;
+    display: inline-block;
+  }
+
+  .title {
+    font-size: 96px;
+  }
+  </style>
+  <!-- bower:css -->
+  <!-- endbower -->
+</head>
+  <div class="container">
+    <div class="content">
+      <div class="title">E-Leaner <?php echo $title; ?></div>
+    </div>
+  </div>
+  <!-- bower:js -->
+  <!-- endbower -->
+
+  
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+  !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+    (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+    r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+  }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+  </script>
+
+</body>
+</html>

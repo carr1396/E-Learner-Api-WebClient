@@ -1,26 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="learnerApp">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="E-Leaner Website">
   <meta name="author" content="Spider">
-  <title>E-Leaner <?php echo $title; ?> {{title}}</title>
+  <title>E-Leaner <?php echo $title; ?></title>
   <link rel="icon" href="favicon.ico" type="image/ico">
+  <style>
+  html, body {
+    height: 100%;
+  }
 
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: table;
+    font-weight: 100;
+    font-family: monospace;
+  }
+
+  .container {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .content {
+    text-align: center;
+    display: inline-block;
+  }
+
+  .title {
+    font-size: 96px;
+  }
+  </style>
   <!-- bower:css -->
   <link rel="stylesheet" href="/client/dependencies/toastr/toastr.css" />
   <!-- endbower -->
-  <link rel="stylesheet" href="/app/all.css" />
-
 </head>
-<body>
-  <div ui-view>
-
+  <div class="container">
+    <div class="content">
+      <div class="title">E-Leaner <?php echo $title; ?></div>
+    </div>
   </div>
   <!-- bower:js -->
-  <script src="/client/dependencies/jquery/dist/jquery.js"></script>
   <script src="/client/dependencies/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
   <script src="/client/dependencies/angular/angular.js"></script>
   <script src="/client/dependencies/angular-ui-router/release/angular-ui-router.js"></script>
@@ -32,11 +58,7 @@
   <script src="/client/dependencies/angular-resource/angular-resource.js"></script>
   <script src="/client/dependencies/angular-sanitize/angular-sanitize.js"></script>
   <script src="/client/dependencies/angular-touch/angular-touch.js"></script>
-  <script src="/client/dependencies/angular-socket-io/socket.js"></script>
-  <script src="/client/dependencies/lodash/lodash.js"></script>
   <!-- endbower -->
-  <script src="/js/all.js"></script>
-
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
   <script>
   !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){

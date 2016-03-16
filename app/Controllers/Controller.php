@@ -17,12 +17,14 @@ abstract class Controller
     protected $logger;
     protected $view;
     protected $session;
+    protected $container;
 
     public function __construct(Container $container)
     {
-        $this->logger= $container->get('logger');
-        $this->view= $container->get('renderer');
-        $this->session 	=$container->get('session');;
+        $this->container = $container;
+        $this->logger= $this->container->get('logger');
+        $this->view= $this->container->get('renderer');
+        $this->session 	= $this->container->get('session');;
     }
 
 }
