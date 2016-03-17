@@ -48,6 +48,18 @@
         signUp: function singUpUser(nuser) {
           var user = new User(nuser);
           var defered = $q.defer();
+          $http.post('/register', nuser).then(function(res) {
+            angular.extend(user, res.data.user);
+            Authentication.authenticateUser(user, res.data.token);
+            defered.resolve(res.data.user);
+          }, function(err) {
+            defered.reject(err);
+          });
+          return defered.promise;
+        },
+        registerUser: function singUpUser(nuser) {
+          var user = new User(nuser);
+          var defered = $q.defer();
           user.$save().then(function(res) {
             Authentication.authenticateUser(user, res.data.token);
             defered.resolve(res);
