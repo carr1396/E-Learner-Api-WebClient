@@ -10,6 +10,8 @@ if (PHP_SAPI == 'cli-server') {
 
 require __DIR__ . '/../vendor/autoload.php';
 
+date_default_timezone_set('UTC');
+
 session_start();
 
 // Instantiate the app

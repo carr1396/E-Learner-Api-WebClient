@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="E-Leaner Website">
   <meta name="author" content="Spider">
+    <meta name="<?php echo $CSRF_NAME; ?>" value="<?php echo $CSRF_VALUE; ?>">
+  <base href="/" target="_blank">
   <title>E-Leaner <?php echo $title; ?> {{title}}</title>
   <link rel="icon" href="favicon.ico" type="image/ico">
 
@@ -16,9 +18,14 @@
 
 </head>
 <body>
-  <div ui-view>
-
-  </div>
+  <spider-navbar title="Adele's E-Leaner"></spider-navbar>
+  <div ui-view></div>
+  <footer class="container-fluid text-center">
+    E-Leaner 2015
+  </footer>
+  <script>
+      window.CurrentBootstrappedUser =<?php echo json_encode($BOOTSTRAPUSER); ?>;
+  </script>
   <!-- bower:js -->
   <script src="/client/dependencies/jquery/dist/jquery.js"></script>
   <script src="/client/dependencies/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
@@ -34,6 +41,8 @@
   <script src="/client/dependencies/angular-touch/angular-touch.js"></script>
   <script src="/client/dependencies/angular-socket-io/socket.js"></script>
   <script src="/client/dependencies/lodash/lodash.js"></script>
+  <script src="/client/dependencies/angular-local-storage/dist/angular-local-storage.js"></script>
+  <script src="/client/dependencies/moment/moment.js"></script>
   <!-- endbower -->
   <script src="/js/all.js"></script>
 

@@ -30,7 +30,6 @@ $container['csrf'] = function ($c) {
 $container['flash'] = function ($c) {
     return new \Slim\Flash\Messages;
 };
-
 // database
 use Illuminate\Database\Capsule\Manager as Capsule;
 $setting = include('settings.php');

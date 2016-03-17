@@ -26,8 +26,23 @@ class ACL
      */
     public function profile()
     {
-        $user = User::find($this->session->get('user_id'));
+        $user = null;
+        if(isset($_SESSION['token']))
+        {
+            $token = JWTHelper::parse_token($_SESSION['token']);
+            $user_id=$token->getClaim('user_id');
+            $user = User::find($user_id);
+        }else if(isset($_SESSION['user_id'])){
+
+            $user = User::find($_SESSION['user_id']);
+        }
         return $user;
     }
 
+    public function isLogged()
+    {
+        if (isset($_SESSION['token'])) {
+            return true;
+        }
+    }
 }

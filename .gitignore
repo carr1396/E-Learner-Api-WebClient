@@ -2,8 +2,6 @@ vendor/
 .idea/
 node_modules/
 client/dependencies/
-public/*
-!favicon.ico
-!index.php
-!.htaccess
-!images/
+public/app/
+public/client/
+public/js/

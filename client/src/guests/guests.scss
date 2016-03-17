@@ -1,3 +1,25 @@
-.jumbotron{
-  background: #f5f5f5;
+.jumbotron.welcome{
+  background-color: #f5f5f5;
+  background: url('/images/e_learner_bg.jpg');
+  min-height: 94.5vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: 0;
+}
+.learner-section{
+  min-height: 85vh;
+}
+.home-section{
+  min-height: 100vh;
+}
+.button-bar-form{
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  flex-wrap: wrap;
+}
+.btn-button-bar-form{
+  width: 49%;
+  display: block;
+  text-align: right;
 }

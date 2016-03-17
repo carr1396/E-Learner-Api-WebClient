@@ -1,0 +1,67 @@
+
+<div class="container-fluid learner-section">
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+    <form class="form-register" name="registerForm" ng-submit="register(registerForm, user)" novalidate="">
+      <h2 class="form-signin-heading">Register, Please Fill In The Form</h2>
+      <div class="form-group">
+        <label for="email" >Email address</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
+        <p class="help-block text-danger" ng-if="registerForm.email.$touched && registerForm.email.$error.email">
+          Wrong Email Format Please Enter A Valid Email
+        </p>
+        <div class="alert alert-danger" ng-if="registerForm.$submitted && !registerForm.email.$valid">
+          <p ng-if="registerForm.email.$error.required">Email Field Is Required.</p>
+          <p ng-if="registerForm.email.$error.email">Wrong Email Format Please Enter A Valid Email.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="username" >Username</label>
+        <input type="text" id="username" name="username" class="form-control"
+         placeholder="Username" required ng-model="user.username" ng-pattern="/^[a-z0-9.\-_]{6,20}$/">
+        <p class="help-block text-danger" ng-if="registerForm.username.$touched && registerForm.username.$invalid && !registerForm.$submitted">Username Should Be atleast 6-20 characters and should have lowercase letters and digits, should not start with a digit and can contain hyphens and underscores </p>
+        <div class="alert alert-danger" ng-if="registerForm.$submitted && !registerForm.username.$valid">
+          <p ng-if="registerForm.username.$error.required">Username Field Is Required.</p>
+          <p ng-if="registerForm.username.$error.pattern">Username Should Be atleast 6-20 characters and should have lowercase letters and digits, should not start with a digit and can contain hyphens and underscores </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" >Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+        required ng-model="user.password"  ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/">
+        <p class="help-block text-danger" ng-if="registerForm.password.$touched && registerForm.password.$invalid && !registerForm.$submitted">
+          Password Should Be atleast 8 characters long and should contain at least one digit,
+           should contain at least one lower case, should contain at least one upper case, should contain at least 8 from the mentioned characters.</p>
+        <div class="alert alert-danger" ng-if="registerForm.$submitted && !registerForm.password.$valid">
+          <p ng-if="registerForm.password.$error.required">Password Field Is Required.</p>
+          <p ng-if="registerForm.password.$error.pattern">
+            Password Should Be atleast 8 characters long and should contain at least one digit,
+             should contain at least one lower case, should contain at least one upper case, should contain at least 8 from the mentioned characters. </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword" >Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword"
+         class="form-control" placeholder="Confirm Password" required ng-model="user.confirmPassword" compare-to="user.password">
+         <p class="help-block text-danger" ng-if="registerForm.confirmPassword.$touched && registerForm.confirmPassword.$invalid && !registerForm.$submitted">
+           Confirm Password Should Match Your Password
+         </p>
+
+      </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="agree" ng-model="user.agree"> Accept Terms And Conditions
+          </label>
+        </div>
+        <a href="#">Read Terms And Conditions</a>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    </form>
+    <div class="button-bar-form">
+       <a class="btn btn-button-bar-form" ui-sref="guests.forgot">Forgot Password? Reset</a> <a class="btn btn-button-bar-form" ui-sref="guests.login">Already Have An Account? Login</a>
+    </div>
+  </div>
+</div>
+</div>

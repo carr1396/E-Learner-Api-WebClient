@@ -1,18 +1,29 @@
 'use strict';
 (function() {
-  angular.module('learnerApp', [ 'ui.router', 'ngResource' ])
+  // toastr options
+  window.toastr.options.showMethod = 'slideDown';
+  window.toastr.options.hideMethod = 'slideUp';
+  window.toastr.options.closeMethod = 'slideUp';
+  angular.module('learnerApp',
+                 [
+                   'ui.router',
+                   'ngResource',
+                   'LocalStorageModule',
+                   'learnerGuestsModule',
+                   'leanerAccountModule'
+                 ])
       .config([
         '$locationProvider',
-        '$stateProvider',
-        '$urlRouterProvider',
-        function($locationProvider, $stateProvider, $urlRouterProvider) {
+        'localStorageServiceProvider',
+        '$httpProvider',
+        function($locationProvider, localStorageServiceProvider,
+                 $httpProvider) {
           $locationProvider.html5Mode(false);
-          $urlRouterProvider.otherwise("/");
-          $stateProvider.state('guest', {
-            url : "/",
-            templateUrl : "app/guests/guests.html",
-            controller : 'GuestCtrl'
-          });
+          localStorageServiceProvider.setPrefix('e_leaner_2015_11000021');
+          localStorageServiceProvider.setStorageType('localStorage');
+          localStorageServiceProvider.setNotify(true, true);
+          $httpProvider.interceptors.push('leanerHTTPInterceptor');
         }
-      ]);
+      ])
+      .constant('Toastr', window.toastr);
 })();

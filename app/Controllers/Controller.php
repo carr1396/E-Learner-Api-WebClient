@@ -7,10 +7,15 @@
  */
 
 namespace Learner\Controllers;
+use Learner\System\JSONRenderer;
+use Learner\System\JSONRequest;
 use Psr\Log\LoggerInterface;
 use Slim\Views\PhpRenderer as Renderer;
 use Learner\System\Session;
 use Slim\Container;
+use Learner\System\ACL;
+
+
 
 abstract class Controller
 {
@@ -18,13 +23,21 @@ abstract class Controller
     protected $view;
     protected $session;
     protected $container;
+    protected $jsonRequest;
+    protected $jsonRender;
+    protected $settings;
+    protected $auth;
 
     public function __construct(Container $container)
     {
         $this->container = $container;
         $this->logger= $this->container->get('logger');
         $this->view= $this->container->get('renderer');
-        $this->session 	= $this->container->get('session');;
+        $this->settings=$this->container->get('settings');
+        $this->session 	= $this->container->get('session');
+        $this->jsonRequest  = new JsonRequest();
+        $this->jsonRender   = new JsonRenderer();
+        $this->auth = new ACL();
     }
 
 }

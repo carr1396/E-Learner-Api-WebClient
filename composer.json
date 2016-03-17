@@ -9,7 +9,9 @@
         "illuminate/database": "^5.2",
         "illuminate/events": "^5.2",
         "alexgarrett/violin": "^2.2",
-        "slim/flash": "^0.1.0"
+        "slim/flash": "^0.1.0",
+        "slim/http-cache": "^0.3.0",
+        "lcobucci/jwt": "^3.1"
     },
     "license": "MIT",
     "authors": [

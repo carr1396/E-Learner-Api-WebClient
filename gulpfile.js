@@ -116,25 +116,24 @@ gulp.task('copy:fonts', function() {
       .pipe(gulp.dest(client.dist + '/../fonts'));
 });
 
-console.log($.watchSequence);
+// console.log($.watchSequence);
 gulp.task('watch', function(cb) {
   gulp.watch(paths.views.files, [ 'html' ]);
   gulp.watch(paths.styles, [ 'compile:styles' ]);
   gulp.watch(paths.scripts, [ 'compile:scripts:app' ]);
   gulp.watch('bower.json', [ 'bower' ]);
 });
-// inject bower components
-var bowerFileStream =
-    gulp.src(__dirname + '/bower.json')
+gulp.task('bower:files', function() { // inject bower components
+    return gulp.src(__dirname + '/bower.json')
         .pipe($.mainBowerFiles())
         .pipe(gulp.dest(__dirname + '/public/client/dependencies/'));
-var bowerWireDepStream =
-    gulp.src(paths.views.main)
-        .pipe(wiredep({directory : client.dependencies, ignorePath : '..'}))
-        .pipe(gulp.dest('./views'));
-var bowerTask = merge(bowerFileStream, bowerWireDepStream);
+});
+gulp.task('bower', ['bower:files'], function() { // inject bower components
+      return gulp.src(paths.views.main)
+          .pipe(wiredep({directory : client.dependencies, ignorePath : '..'}))
+          .pipe(gulp.dest('./views'));
+});
 
-gulp.task('bower', function() { return bowerTask; });
 
 gulp.task('clean:dist', function(cb) { rimraf('./public/app/', cb); });
 gulp.task('clean:tmp', function(cb) { rimraf('./.tmp', cb); });

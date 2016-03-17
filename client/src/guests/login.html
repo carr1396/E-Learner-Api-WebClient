@@ -1,0 +1,30 @@
+
+<div class="container-fluid learner-section">
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+    <form class="form-signin" name="loginForm" ng-submit="login(loginForm, user.username, user.password)" novalidate="">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control"
+         placeholder="Username" required ng-model="user.username" ng-pattern="/^[a-z0-9.\-_]{6,20}$/">
+        <p class="help-block text-danger" ng-if="loginForm.username.$touched && loginForm.username.$invalid && !loginForm.$submitted">Username Should Be atleast 6-20 characters and should have lowercase letters and digits, should not start with a digit and can contain hyphens and underscores </p>
+        <div class="alert alert-danger" ng-if="loginForm.$submitted && !loginForm.username.$valid">
+          <p ng-if="loginForm.username.$error.required">Username Field Is Required.</p>
+        </div>
+        <label for="password" class="sr-only" >Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+        required ng-model="user.password">
+        <div class="alert alert-danger" ng-if="loginForm.$submitted && !loginForm.password.$valid">
+          <p ng-if="loginForm.password.$error.required">Password Field Is Required.</p>
+        </div>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+    <div class="button-bar-form">
+       <a class="btn btn-button-bar-form" ui-sref="guests.forgot">Forgot Password? Reset</a> <a class="btn btn-button-bar-form" ui-sref="guests.register">New User? Create an account</a>
+    </div>
+  </div>
+</div>
+
+</div>

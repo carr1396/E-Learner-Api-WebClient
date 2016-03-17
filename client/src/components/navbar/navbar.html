@@ -1,0 +1,32 @@
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="guests.index">{{title}}</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active" ><a ui-sref="guests.index">Home</a></li>
+        <!-- <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ui-sref-active="active" ng-if="!isAuthenticated()"><a ui-sref="guests.login" >Login</a>
+        </li>
+        <li ui-sref-active="active" ng-if="isAuthenticated()">
+          <a href="#" name="logout" ng-click="signOut($event)">Logout</a>
+        </li>
+        <li ui-sref-active="active" ng-if="isAuthenticated()">
+          <a ui-sref="accounts.index" >{{getCurrentUser().username}}</a>
+        </li>
+          <li ng-repeat="link in links" ui-sref-active="active">
+            <a ui-sref="{{link.name}}" ng-if="link.name">{{link.text}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

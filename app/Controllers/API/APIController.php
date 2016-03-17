@@ -28,12 +28,12 @@ class APIController extends Controller
     public function index(Request $request, Response $response, $args)
     {
 
-        $this->view->render($response, 'index.phtml',[
-            'user' =>[],
-            'title'=>'API'
-        ]);
-        return $response;
+        return $this->jsonRender->render($response, 200,[
+            'message'=>'Welcome To E-Leaner API V1'
+        ] );
     }
+
+
 
 
 }
