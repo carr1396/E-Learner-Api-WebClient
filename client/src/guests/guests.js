@@ -11,6 +11,23 @@
         '$stateProvider',
         '$urlRouterProvider',
         function($locationProvider, $stateProvider, $urlRouterProvider) {
+          var routeAccessAuthorization = {
+            admin : {
+              auth : function(Authentication) {
+                return Authentication.userAccessAuthorization('admin');
+              }
+            },
+            guest : {
+              auth : function(Authentication) {
+                return Authentication.userAlreadyLoggedIn();
+              }
+            },
+            users : {
+              auth : function(Authentication) {
+                return Authentication.authroizeAccessForAuthenticatedUser();
+              }
+            }
+          };
           $urlRouterProvider.otherwise("/");
           $stateProvider.state('guests',
                                {
@@ -29,6 +46,7 @@
               .state('guests.login',
                      {
                        url : 'login',
+                       resolve : routeAccessAuthorization.guest,
                        views : {
                          guests : {
                            templateUrl : 'app/guests/login.html',
@@ -39,6 +57,7 @@
               .state('guests.forgot',
                      {
                        url : 'forgot',
+                       resolve : routeAccessAuthorization.guest,
                        views :
                            {guests : {templateUrl : 'app/guests/forgot.html'}}
                      })
@@ -46,10 +65,12 @@
                   'guests.reset',
                   {
                     url : 'reset/{token}',
+                    resolve : routeAccessAuthorization.guest,
                     views : {guests : {templateUrl : 'app/guests/reset.html'}}
                   })
               .state('guests.register', {
                 url : 'register',
+                resolve : routeAccessAuthorization.guest,
                 views : {
                   guests : {
                     templateUrl : 'app/guests/register.html',
@@ -77,6 +98,9 @@
               $scope.errors = [];
               $scope.messages = [];
               $scope.user = {};
+              if (Authentication.isAuthenticated()) {
+                $location.path('/');
+              }
               $scope.login = function userSignInFormSubmitted(form, username,
                                                               password) {
                 if (form.$valid) {
@@ -84,8 +108,7 @@
                       .then(
                           function(user) {
                             Toastr.success("Congratulations!!!",
-                                           user.username +
-                                               ' You Are Logged In');
+                                           username + ' You Are Logged In');
                             $location.path('/');
                           },
                           function(err) {

@@ -10,9 +10,22 @@
         isArray: false
       }
     });
-    //add is admin
+    User.prototype.hasRole = function(roleName) {
+      if(!this.roles || this.roles.length<=0) return false;
+      for (var i = 0; i < this.roles.length; i++) {
+        if(this.roles[i].name === roleName)
+        {
+          return true;
+        }
+      }
+      return false;
+    };
+
     User.prototype.isAdmin = function() {
-      return this.roles && this.roles.indexOf('admin') > -1;
+      return this.hasRole('admin');
+    };
+    User.prototype.isSuperAdmin = function() {
+      return this.hasRole('superadmin');
     };
     return User;
   }]);

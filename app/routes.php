@@ -24,6 +24,10 @@ $app->group('/users/{id:[0-9]+}', function () {
 
 $app->group('/api/v1', function(){
    $this->get( '', 'Learner\Controllers\API\APIController:index')->setName('api_welcome');
+    $this->post( '/roles', 'Learner\Controllers\API\Admin\Super\RolesController:store')->setName('api_roles_store');
+    $this->get( '/roles', 'Learner\Controllers\API\Admin\Super\RolesController:index')->setName('api_roles_index');
+    $this->get( '/roles/{id:[0-9]+}', 'Learner\Controllers\API\Admin\Super\RolesController:show')->setName('api_roles_show');
+    $this->put( '/roles/{id:[0-9]+}', 'Learner\Controllers\API\Admin\Super\RolesController:update')->setName('api_roles_update');
 });
 $app->get('/{anything:.*}','Learner\Controllers\GuestController:anything')->setName('guest_anything');
 /*$app->get('/users/{id:[0-9]+}', function ($request, $response, $args) {

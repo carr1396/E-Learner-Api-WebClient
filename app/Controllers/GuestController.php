@@ -101,11 +101,17 @@ class GuestController extends Controller
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
-                    $jwt = $this->settings['jwt'];
-                    $builder = new JWTHelper($jwt['iss'],$jwt['private_key'],$user->id, 'admin', $user->username );
-                    $token = $builder->generate_token();
                     $data =array();
-                    $data['user']=$user;
+                    $data['user']=User::with('roles')->find($user->id);
+                    $roles = $user->roles;
+
+                    $role='';
+                    foreach($roles as $r){
+                        $role.=$r->name.'|';
+                    }
+                    $jwt = $this->settings['jwt'];
+                    $builder = new JWTHelper($jwt['iss'],$jwt['private_key'],$user->id, $role, $user->username );
+                    $token = $builder->generate_token();
                     $data['code']=200;
                     $data['success']=true;
                     $data['token']=(string)$token;
@@ -161,7 +167,7 @@ class GuestController extends Controller
                     $builder = new JWTHelper($jwt['iss'],$jwt['private_key'],$user->id, 'admin', $user->username );
                     $token = $builder->generate_token();
                     $data =array();
-                    $data['user']=$user;
+                    $data['user']=User::with('roles')->find($user->id);
                     $data['code']=200;
                     $data['success']=true;
                     $data['token']=(string)$token;

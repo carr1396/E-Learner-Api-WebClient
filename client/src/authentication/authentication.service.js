@@ -11,6 +11,7 @@
         angular.extend(user, $window.CurrentBootstrappedUser);
         currentUser = user;
       }
+      $
       var Authentication = {
         getCurrentUser: function getCurrentLoggedInUser() {
           return currentUser;
@@ -69,7 +70,7 @@
           });
           return defered.promise;
         },
-        update: function singUpUser(nuser) {
+        update: function UpdateUser(nuser) {
           var user = Authentication.getCurrentUser();
           angular.extend(user, nuser);
           var defered = $q.defer();
@@ -84,27 +85,51 @@
         },
         isAuthorized: function isCurrenttUserAuthorized(role) {
           return !!Authentication.getCurrentUser() && Authentication.getCurrentUser()
-            .roles.indexOf(role) > -1;
+            .hasRole(role);
+        },
+        isAuthorizedWithRoles: function isCurrenttUserAuthorized(roles) {
+          var hasRole = false;
+          for (var i = 0; i < roles.length; i++) {
+            if(Authentication.getCurrentUser().hasRole(roles[i]))
+              {
+                hasRole =true;
+                break;
+              }
+          }
+          return !!Authentication.getCurrentUser() && hasRole;
         },
         userAccessAuthorization: function userAccessAuthorization(role) {
           if (Authentication.isAuthorized(role)) {
             return true;
           } else {
+            toastr.error('Access Denied', 'You Tried To Access A Page You Are Not Authorized To See');
             return $q.reject('Not Authorized');
+
+          }
+        },
+        userAccessAuthorizationIfEither: function userAccessAuthorization(roles) {
+          if (Authentication.isAuthorizedWithRoles(roles)) {
+            return true;
+          } else {
+            toastr.error('Access Denied', 'You Tried To Access A Page You Are Not Authorized To See');
+            return $q.reject('Not Authorized');
+
           }
         },
         userAlreadyLoggedIn: function userAlreadyLoggedIn() {
           if (!Authentication.isAuthenticated()) {
             return true;
           } else {
-            return $q.reject('Already Logged In');
+            toastr.error('Access Denied', 'You Are Already Logged In');
+            return $q.reject('AlreadyLoggedIn');
           }
         },
         authroizeAccessForAuthenticatedUser: function authroizeAccessForAuthenticatedUser() {
           if (Authentication.isAuthenticated()) {
             return true;
           } else {
-            return $q.reject('Not Authorized');
+            toastr.error('Access Denied', 'You Tried To Access A Page You Are Not Authorized To See');
+            return $q.reject('NotAuthorized');
           }
         },
         isAuthenticated: function isCurrenttUserAuthenticated() {
@@ -126,8 +151,8 @@
     responseError: function(response) {
       //http://onehungrymind.com/winning-http-interceptors-angularjs/
       if (response.status === 440) {
-            $rootScope.$broadcast('Token Expired Logging Out');
-            Toastr.error('Error!!!', 'Token Expired Logging Out');
+            $rootScope.$broadcast('token_expired');
+            Toastr.error('Error!!!', 'Token Expired Or Invalid Logging Out');
             localStorageService.remove('_token');
             window.CurrentBootstrappedUser = null;
             $location.path('/');

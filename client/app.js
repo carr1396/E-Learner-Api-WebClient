@@ -8,6 +8,7 @@
                  [
                    'ui.router',
                    'ngResource',
+                   'ui.bootstrap',
                    'LocalStorageModule',
                    'learnerGuestsModule',
                    'leanerAccountModule'
@@ -25,5 +26,19 @@
           $httpProvider.interceptors.push('leanerHTTPInterceptor');
         }
       ])
-      .constant('Toastr', window.toastr);
+      .run([
+        '$rootScope',
+        '$location',
+        function($rootScope, $location) {
+          $rootScope.$on('$routeChangeError',
+                         function(e, curr, prev, rejection) {
+                           if (rejection === 'NotAuthorized' ||
+                               rejection === 'AlreadyLoggedIn') {
+                             $location.path('/');
+                           }
+                         });
+        }
+      ])
+      .constant('Toastr', window.toastr)
+      .constant('APIBASEURL', '/api/v1');
 })();

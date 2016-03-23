@@ -10,11 +10,13 @@
             scope : {title : '@'},
             controller : [
               '$scope',
+              '$rootScope',
               '$location',
               '$state',
               'Authentication',
               'Toastr',
-              function($scope, $location, $state, Authentication, Toastr) {
+              function($scope, $rootScope, $location, $state, Authentication,
+                       Toastr) {
                 $scope.getCurrentUser = Authentication.getCurrentUser;
                 $scope.isAuthenticated = Authentication.isAuthenticated;
                 $scope.isActive = function isActiveLink(name) {
@@ -23,13 +25,13 @@
                 $scope.signOut = function singOutUser($event) {
                   $event.preventDefault();
                   Authentication.signOut().then(
-                      function(res) {
+                      function() {
                         $scope.username = "";
                         $scope.password = "";
                         Toastr.success('User Logged Out');
                         $location.path('/');
                       },
-                      function(err) {
+                      function() {
                         Toastr.error(
                             "Error!!!",
                             'Something Went Wrong While Logging Out User');
@@ -43,7 +45,11 @@
                       $location.path().substring(1).split('/')[0];
                   return page === currentRoute ? 'active' : '';
                 };
-
+                $rootScope.$on('token_expired', function(event) {
+                  Authentication.authenticateUser(null, null);
+                  $scope.getCurrentUser = Authentication.getCurrentUser;
+                  $scope.isAuthenticated = Authentication.isAuthenticated;
+                });
                 $scope.routes = [];
                 $scope.links = [];
                 for (; i < $scope.routes.length; i++) {

@@ -40,6 +40,7 @@ $app->add(/**
             $starts= starts_with($request->getUri()->getPath(), '/api/v1');
             if($starts==1){
                 if(!$authenticated || strlen($token)<=0){
+                    $_SESSION = array();
                     return (new JSONRenderer())->render($response, 440, ['code'=>440, 'error'=>'Token Invalid, Or Token Expired']);
                 }
             }

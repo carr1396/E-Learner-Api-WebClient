@@ -12,7 +12,6 @@ namespace Learner\Controllers\API;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Learner\Models\User;
 use Learner\Controllers\Controller;
 
 

@@ -58,7 +58,7 @@ class JWTHelper
             ->setNotBefore(time() + 60) // Configures the time that the token can be used (nbf claim)
             ->setExpiration(time() + 3600*60*24*30) // Configures the expiration time of the token (exp claim)
             ->set('user_id', $this->user_id)
-            ->set('role', $this->user_role)
+            ->set('roles', $this->user_role)
             ->set('username', $this->username)
             ->sign($this->signer, $this->key)
             ->getToken();

@@ -27,6 +27,10 @@ class User extends Eloquent {
 		'password', 'remember_token'
 	];
 
+    public function roles()
+    {
+        return $this->belongsToMany('Learner\Models\Role');
+    }
     public function setPasswordAttribute($value){
         $options = [
             'cost' => 11
