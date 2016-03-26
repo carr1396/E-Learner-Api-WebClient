@@ -11,7 +11,7 @@
         angular.extend(user, $window.CurrentBootstrappedUser);
         currentUser = user;
       }
-      $
+
       var Authentication = {
         getCurrentUser: function getCurrentLoggedInUser() {
           return currentUser;
@@ -38,9 +38,14 @@
             password: password
           }).then(function(res) {
             var user = new User();
-            angular.extend(user, res.data.user);
-            Authentication.authenticateUser(user, res.data.token);
-            defered.resolve(res.data.user);
+            if(res.data.success)
+            {
+              angular.extend(user, res.data.user);
+              Authentication.authenticateUser(user, res.data.token);
+              defered.resolve(res.data.user);
+            }else{
+              defered.reject(res);
+            }
           }, function(err) {
             defered.reject(err);
           });
@@ -50,9 +55,14 @@
           var user = new User(nuser);
           var defered = $q.defer();
           $http.post('/register', nuser).then(function(res) {
-            angular.extend(user, res.data.user);
-            Authentication.authenticateUser(user, res.data.token);
-            defered.resolve(res.data.user);
+            if(res.data.success)
+            {
+              angular.extend(user, res.data.user);
+              Authentication.authenticateUser(user, res.data.token);
+              defered.resolve(res.data.user);
+            }else{
+              defered.reject(res);
+            }
           }, function(err) {
             defered.reject(err);
           });
@@ -144,13 +154,13 @@
       request : function(config) {
         var access_token = localStorageService.get('_token') ? localStorageService.get('_token') : null;
         if (access_token) {
-            config.headers.authorization = 'Bearer '+access_token;
+            config.headers.Authorization = 'Bearer '+access_token;
         }
         return config;
     },
     responseError: function(response) {
       //http://onehungrymind.com/winning-http-interceptors-angularjs/
-      if (response.status === 440) {
+      if (response.status == 440) {
             $rootScope.$broadcast('token_expired');
             Toastr.error('Error!!!', 'Token Expired Or Invalid Logging Out');
             localStorageService.remove('_token');

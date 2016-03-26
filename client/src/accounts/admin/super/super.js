@@ -1,7 +1,11 @@
 (function() {
   'use strict';
   angular.module('leanerAccountAdministrationSuperModule',
-                 [ 'leanerAdminSuperRoleModule' ])
+                 [
+                   'leanerAdminSuperRoleModule',
+                   'leanerAdminSuperPermissionModule',
+                   'leanerAdminSuperUserModule'
+                 ])
       .config([
         '$locationProvider',
         '$stateProvider',
@@ -39,23 +43,71 @@
                        url : '/roles/index',
                        views : {
                          "supers" : {
-                           templateUrl :
-                               "app/accounts/admin/super/roles/index.html",
+                           'templateUrl' :
+                               'app/accounts/admin/super/roles/index.html',
                            controller : 'RolesCtrl'
                          }
                        }
                      })
-              .state('accounts.admin.super.rolesEdit', {
-                url : '/roles/:roleId/edit',
+              .state('accounts.admin.super.rolesEdit',
+                     {
+                       url : '/roles/:roleId/edit',
+                       views : {
+                         "supers" : {
+                           templateUrl :
+                               'app/accounts/admin/super/roles/index.html',
+                           controller : 'RolesCtrl'
+                         }
+                       }
+                     })
+              .state(
+                  'accounts.admin.super.permissions',
+                  {
+                    url : '/permissions/index',
+                    views : {
+                      "supers" : {
+                        templateUrl :
+                            'app/accounts/admin/super/permissions/index.html',
+                        controller : 'PermissionsCtrl'
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.super.permissionsEdit',
+                  {
+                    url : '/permissions/:permissionId/edit',
+                    views : {
+                      "supers" : {
+                        templateUrl :
+                            'app/accounts/admin/super/permissions/index.html',
+                        controller : 'PermissionsCtrl'
+                      }
+                    }
+                  })
+              .state('accounts.admin.super.users',
+                     {
+                       url : '/users/index',
+                       views : {
+                         "supers" : {
+                           templateUrl :
+                               'app/accounts/admin/super/users/index.html',
+                           controller : 'UsersCtrl'
+                         }
+                       }
+                     })
+              .state('accounts.admin.super.usersEdit', {
+                url : '/users/:userId/edit',
                 views : {
                   "supers" : {
-                    templateUrl : "app/accounts/admin/super/roles/index.html",
-                    controller : 'RolesCtrl'
+                    templateUrl : 'app/accounts/admin/super/users/index.html',
+                    controller : 'UsersCtrl'
                   }
                 }
               });
 
         }
       ])
-      .controller('SuperAdministrationCtrl', [ '$scope', function($scope) {} ]);
+      .controller(
+          'SuperAdministrationCtrl',
+          [ '$scope', function($scope) { $scope.title = "Super User"; } ]);
 })();

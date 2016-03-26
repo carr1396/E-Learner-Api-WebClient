@@ -8,17 +8,17 @@
 
 namespace Learner\Controllers\API\Admin\Super;
 
-use Learner\Validation\RoleValidator;
+use Learner\Validation\UserValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Learner\Controllers\Controller as BaseController;
-use Learner\Models\Role;
+use Learner\Models\User;
 
-class RolesController extends BaseController
+class UsersController extends BaseController
 {
     public function index(Request $request, Response $response, $args)
     {
-        return $response->withJson(Role::with('permissions')->get());
+        return $response->withJson(User::with('roles')->get());
     }
 
     public function show(Request $request, Response $response, $args)
@@ -33,7 +33,7 @@ class RolesController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        return $response->withJson(Role::with('permissions')->where('id', $args['id'])->first());
+        return $response->withJson(User::with('roles')->where('id', $args['id'])->first());
     }
     public function destroy(Request $request, Response $response, $args)
     {
@@ -47,8 +47,8 @@ class RolesController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        $role = Role::where('id', $args['id'])->first();
-        $role->delete();
+        $user = User::with('roles')->where('id', $args['id'])->first();
+        $user->delete();
         return $response->withJson(array("code"=>200, "deleted"=>true));
     }
     public function update(Request $request, Response $response, $args)
@@ -65,14 +65,17 @@ class RolesController extends BaseController
         }
         $this->jsonRequest->setRequest($request);
         $data = $this->jsonRequest->getRequestParams();
-        $identifier   = isset($data['name'])?$data['name']:null;
-        $description   = isset($data['description'])?$data['description']:null;
-        $permissions = isset($data['permissionsOut'])?$data['permissionsOut']:[];
-        $permissionsID =array();
-        foreach($permissions as $p){
-//            var_dump( $p);
-            array_push($permissionsID, $p['id']);
+        $email      = isset($data['email'])?$data['email']:null;
+        $username   = isset($data['username'])?$data['username']:null;
+        $roles = isset($data['rolesCheckModel'])?$data['rolesCheckModel']:array();
+        $roleIDs=array();
+        foreach($roles as $r){
+            if($r['checked'])
+            {
+                array_push($roleIDs, $r['id']);
+            }
         }
+
         if(count($data)<=0)
         {
             $data['code']=400;
@@ -81,17 +84,14 @@ class RolesController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }else{
-            $identifier = strtolower($identifier);
-            $v = new RoleValidator(new Role());
-            $validateArray = array();
-            if(!is_null($identifier)){
-                $validateArray[ 'name'] = [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(4)|max(16)'];
-            }
-            if(!is_null($description)){
-                $validateArray ['description'] = [$description, 'max(40)'];
-            }
-            $v->validate($validateArray);
+            $username = strtolower($username);
+            $v = new UserValidator(new User());
+            $v->validate([
+                'email'     => [$email, 'required|email|uniqueEmailRoute('.$args['id'].')'],
+                'username'  => [$username, 'required|alnumDash|max(20)|min(6)|uniqueUsernameRoute('.$args['id'].')'],
+            ]);
             if(!$v->passes()){
+
                 $data['code']=400;
                 $data['success']=false;
                 $data['error'] = 'Some Errors Were Found';
@@ -99,33 +99,32 @@ class RolesController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $role = Role::where('id', $args['id'])->first();
-                if(!is_null($identifier))
+                $user = User::where('id', $args['id'])->first();
+                if(!is_null($username))
                 {
-                    $role->name= $identifier;
+                    $user->username= $username;
                 }
-                if(!is_null($description))
+                if(!is_null($email))
                 {
-                    $role->description = $description;
+                    $user->email = $email;
                 }
-                $role->permissions()->sync($permissionsID);
-                $saved = $role->save();
-
+                $user->roles()->sync($roleIDs);
+                $saved = $user->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving Role';
+                    $data['error'] = 'Some thing Went Wrong While Saving User';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
 //                    $data =array();
-//                    $data['role']=$role;
+//                    $data['user']=$user;
 //                    $data['code']=200;
 //                    $data['success']=true;
 //                    $response = $this->jsonRender->render($response, 200, $data);
 //                    return $response;
-                    return $response->withJson(Role::with('permissions')->where('id', $args['id'])->first());
+                    return $response->withJson(User::with('roles')->where('id', $args['id'])->first());
                 }
             }
         }
@@ -153,12 +152,13 @@ class RolesController extends BaseController
             return $response;
         }else{
             $identifier = strtolower($identifier);
-            $v = new RoleValidator(new Role());
+            $v = new UserValidator(new User());
             $v->validate([
-                'name'    => [$identifier, 'required|uniqueName|min(4)|max(16)'],
+                'name'    => [$identifier, 'required|uniqueName|nameFormat|min(4)|max(16)'],
                 'description'      => [$description, 'max(40)']
             ]);
             if(!$v->passes()){
+//                preg_match("/^([a-z]{4,16})(:)([a-z]{4,16})$/", $identifier, $matches);
                 $data['code']=400;
                 $data['success']=false;
                 $data['error'] = 'Some Errors Were Found';
@@ -166,24 +166,24 @@ class RolesController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $role = new Role();
-                $role->name    = $identifier;
+                $user = new User();
+                $user->name    = $identifier;
                 if(!is_null($description))
                 {
-                    $role->description = $description;
+                    $user->description = $description;
                 }
 
-                $saved = $role->save();
+                $saved = $user->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving Role';
+                    $data['error'] = 'Some thing Went Wrong While Saving User';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
                     $data =array();
-                    $data['role']=Role::with('permissions')->where('id', $role->id)->first();
+                    $data['user']=User::with('roles')->where('id', $user->id)->first();
                     $data['code']=200;
                     $data['success']=true;
                     $response = $this->jsonRender->render($response, 200, $data);

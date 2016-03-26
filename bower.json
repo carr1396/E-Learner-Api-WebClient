@@ -28,7 +28,6 @@
     "angular-ui-bootstrap": "^1.2.4",
     "bootstrap-sass": "^3.3.6",
     "angular-ui-router": "^0.2.18",
-
     "angular-animate": "^1.4.0",
     "angular-aria": "^1.4.0",
     "angular-cookies": "^1.4.0",
@@ -36,13 +35,12 @@
     "angular-resource": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
-
     "font-awesome": "fontawesome#^4.5.0",
     "angular-socket-io": "^0.7.0",
-
     "angular-local-storage": "^0.2.7",
-
-    "angular-bootstrap": "^1.2.5"
+    "angular-bootstrap": "^1.2.5",
+    "isteven-angular-multiselect": "https://github.com/isteven/angular-multi-select.git#^4.0.0",
+    "angular-multi-chk": "*"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

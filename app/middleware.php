@@ -12,18 +12,24 @@ $app->add(/**
  */
 	function( \Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, $next){
         $headers = $request->getHeaders();
-        $authenticated = false;
         $token = '';
         unset($_SESSION['token']);
         if(!empty($headers));
         {
             $authenticated = array_has($headers, 'HTTP_AUTHORIZATION');
             if($authenticated){
+
                 $t = JWTHelper::get_token_from_header($headers);
                 $parsed = JWTHelper::verify_token($t);
-                if($parsed!=false && !is_null($parsed)){
-                    $_SESSION['token']=$t;
-                    $token=$t;
+                $parseFailed = is_null($parsed);
+                if(!$parseFailed)
+                {
+                    $parseFailed = !$parsed;
+                    if(!$parseFailed){
+                        $_SESSION['token']=$t;
+                        $token=$t;
+
+                    }
                 }
             }
         }
@@ -38,10 +44,14 @@ $app->add(/**
 		  break;
         default:{
             $starts= starts_with($request->getUri()->getPath(), '/api/v1');
-            if($starts==1){
-                if(!$authenticated || strlen($token)<=0){
-                    $_SESSION = array();
-                    return (new JSONRenderer())->render($response, 440, ['code'=>440, 'error'=>'Token Invalid, Or Token Expired']);
+            if($starts){
+
+                if(!$authenticated){
+                    if(strlen($token)<=0)
+                    {
+                        //$_SESSION = array();
+                        return (new JSONRenderer())->render($response, 440, ['code'=>440, 'error'=>'Token Invalid, Or Token Expired']);
+                    }
                 }
             }
             break;

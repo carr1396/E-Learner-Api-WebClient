@@ -114,7 +114,6 @@
                           function(err) {
                             $scope.errors = [];
                             $scope.messages = [];
-                            console.log(err);
                             $scope.errors.push(err.statusText);
                             if (err.data) {
                               if (err.data.error) {

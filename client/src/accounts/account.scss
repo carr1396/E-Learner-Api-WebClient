@@ -1,0 +1,10 @@
+.flex-table{
+  thead tr, tbody tr{
+    display: flex;
+    flex-grow: 1;
+  }
+}
+
+.table-responsive{
+  width: 98%;
+}

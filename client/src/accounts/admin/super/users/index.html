@@ -1,0 +1,95 @@
+<div class="container-fluid">
+  <div class="row">
+    <div ng-if="ifUserExists(user)" class="col-md-4">
+      <form ng-if="user" class="form-horizontal" ng-submit="createOrEdit(createEditUserForm, user)" name="createEditUserForm" novalidate style="padding-top:10px;">
+        <div class="form-group">
+          <label for="email" >Email address</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus ng-model="user.email">
+          <p class="help-block text-danger" ng-if="createEditUserForm.email.$touched && createEditUserForm.email.$error.email">
+            Wrong Email Format Please Enter A Valid Email
+          </p>
+          <div class="alert alert-danger" ng-if="createEditUserForm.$submitted && !createEditUserForm.email.$valid">
+            <p ng-if="createEditUserForm.email.$error.required">Email Field Is Required.</p>
+            <p ng-if="createEditUserForm.email.$error.email">Wrong Email Format Please Enter A Valid Email.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="username" >Username</label>
+          <input type="text" id="username" name="username" class="form-control"
+          placeholder="Username" required ng-model="user.username" ng-pattern="/^[a-z0-9.\-_]{6,20}$/">
+          <p class="help-block text-danger" ng-if="createEditUserForm.username.$touched && createEditUserForm.username.$invalid && !createEditUserForm.$submitted">Username Should Be atleast 6-20 characters and should have lowercase letters and digits, should not start with a digit and can contain hyphens and underscores </p>
+          <div class="alert alert-danger" ng-if="createEditUserForm.$submitted && !createEditUserForm.username.$valid">
+            <p ng-if="createEditUserForm.username.$error.required">Username Field Is Required.</p>
+            <p ng-if="createEditUserForm.username.$error.pattern">Username Should Be atleast 6-20 characters and should have lowercase letters and digits, should not start with a digit and can contain hyphens and underscores </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <p class="help-block">
+            Attach Detach Roles
+          </p>
+          <div multi-check-group>
+            <div ng-repeat="r in user.rolesCheckModel">
+              <label class="checkbox-inline">
+                <input type="checkbox" multi-check ng-model="r.checked" />
+                {{r.name}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">{{ifUserExists(user)?'Edit':'Create'}}</button>
+        </div>
+      </form>
+    </div>
+    <div>
+      <div ng-class="{'col-md-8': ifUserExists(user), 'col-md-12': !ifUserExists(user)}">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  ID
+                </th>
+                <th>
+                  User
+                </th>
+                <th>
+                  Desc
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="r in users">
+                <td>
+                  {{r.id}}
+                </td>
+                <td>
+                  {{r.username}}
+                  <br>
+                  {{r.email}}
+                </td>
+                <td>
+                  <a ui-sref="accounts.admin.super.users" type="button" class="btn btn-default btn-xs" uib-tooltip="{{r.description?r.description:'N/A'}}"><span class="fa fa-2x fa-eye"></span></a>
+                </td>
+                <td>
+                  <a class="btn btn-primary btn-xs" ui-sref="accounts.admin.super.usersEdit({userId:r.id})" user="button">
+                    <span class="fa fa-2x fa-edit"></span>
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-danger btn-xs" ng-click="deleteThisUser(r, $index)" user="button">
+                    <span class="fa fa-2x fa-trash"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

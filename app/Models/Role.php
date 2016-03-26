@@ -17,4 +17,16 @@ class Role extends Eloquent
 
     protected $fillable =['name', 'description'];
 
+    protected $touches = ['users'];
+
+    public function users()
+    {
+        return $this->belongsToMany('Learner\Models\User');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany('Learner\Models\Permission');
+    }
+
 }

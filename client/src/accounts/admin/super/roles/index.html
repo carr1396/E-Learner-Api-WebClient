@@ -1,6 +1,6 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
+<div class="wrapper">
+  <div class="wrapper-inner">
+    <div>
       <form ng-if="role" class="form-inline" ng-submit="createOrEdit(createEditRoleForm, role)" name="createEditRoleForm" novalidate style="padding-top:10px;">
         <div class="alert alert-danger" ng-if="errors && errors.length>0 && createEditRoleForm.$invalid">
           <ul>
@@ -32,50 +32,75 @@
           <label for="description">Description</label>
           <input type="text" class="form-control" id="description", name='description' placeholder="Role Description" ng-model="role.description" ng-maxlength="40">
         </div>
+        <isteven-multi-select input-model="role.permissionsInModel" name="permissions" button-label="id" orientation="horizontal"
+        required output-model="role.permissionsOut" dropdown-label="Select Permissions" item-label="id name displayName"
+    tick-property="ticked">
+        </isteven-multi-select>
         <button type="submit" class="btn btn-primary">{{ifRoleExists(role)?'Edit':'Create'}}</button>
       </form>
     </div>
-    <div class="col-md-8">
-      <br>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>
-                Name
-              </th>
-              <th>
-                Display Name
-              </th>
-              <th>
-                Description
-              </th>
-              <th>
-                Edit
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="r in roles">
-              <td>
-                {{r.name}}
-              </td>
-              <td>
-                {{r.displayName()}}
-              </td>
-              <td>
-                <button type="button" class="btn btn-default btn-xs" uib-tooltip="{{r.description?r.description:'N/A'}}">Description</button>
-              </td>
-              <td>
-                <a class="btn btn-primary btn-xs" ui-sref="accounts.admin.super.rolesEdit({roleId:r.id})" role="button">
-                  <span class="fa fa-edit"></span>
+    <div class="flex-columns">
+      <div class="flex-column-3">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Desc
+                </th>
+                <th>
                   Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </th>
+                <th>
+                  Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="r in roles">
+                <td>
+                  {{r.name}}
+                </td>
+                <td>
+                  <a ui-sref="accounts.admin.super.roles" type="button" class="btn btn-default btn-xs" uib-tooltip="{{r.description?r.description:'N/A'}}"><span class="fa fa-2x fa-eye"></span></a>
+                </td>
+                <td>
+                  <a class="btn btn-primary btn-xs" ui-sref="accounts.admin.super.rolesEdit({roleId:r.id})" role="button">
+                    <span class="fa fa-2x fa-edit"></span>
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-danger btn-xs" ng-click="deleteThisRole(r, $index)" role="button">
+                    <span class="fa fa-2x fa-trash"></span>
+                  </button>
+                </td>
+                <td>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+      <div class="flex-column-4">
+
+      </div>
+    </div>
+    <div class="container-fluid">
+        <div  class="row">
+          <div class="col-md-3 col-sm-4" ng-repeat="r in roles" style="background:#fdfdfd; border-radius: 15px;">
+            <h5>{{r.displayName()}}</h5>
+            <p ng-if="r.permissions && r.permissions.length>0">
+              <span class="label  label-info label-permissions"  ng-repeat="p in r.permissions"> {{p.name}}</span>
+            </p>
+            <p ng-if="r.permissions.length<=0 || !r.permissions" class="text-danger">
+              This Role Has No Permissions
+            </p>
+          </div>
+        </div>
     </div>
   </div>
 </div>

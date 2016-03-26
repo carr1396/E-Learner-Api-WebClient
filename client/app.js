@@ -10,6 +10,8 @@
                    'ngResource',
                    'ui.bootstrap',
                    'LocalStorageModule',
+                   'isteven-multi-select',
+                   'angular-multi-check',
                    'learnerGuestsModule',
                    'leanerAccountModule'
                  ])

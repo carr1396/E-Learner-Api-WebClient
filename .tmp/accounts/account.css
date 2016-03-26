@@ -1,0 +1,16 @@
+.flex-table thead tr, .flex-table tbody tr {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.table-responsive {
+  width: 98%;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFjY291bnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UscUJBQWM7RUFBZCxzQkFBYztFQUFkLHFCQUFjO0VBQWQsY0FBYztFQUNkLG9CQUFhO0VBQWIscUJBQWE7TUFBYixxQkFBYTtVQUFiLGFBQWE7Q0FDZDs7QUFFRDtFQUNFLFdBQVc7Q0FDWiIsImZpbGUiOiJhY2NvdW50cy9hY2NvdW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mbGV4LXRhYmxlIHRoZWFkIHRyLCAuZmxleC10YWJsZSB0Ym9keSB0ciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZ3JvdzogMTtcbn1cblxuLnRhYmxlLXJlc3BvbnNpdmUge1xuICB3aWR0aDogOTglO1xufVxuIl0sInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9 */

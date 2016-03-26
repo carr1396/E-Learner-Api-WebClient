@@ -45,7 +45,7 @@
               '<nav class="spider-dashboard-nav">',
               '<a class="dashboard-header" ui-sref="{{::db.currentLocation}}"',
               'uib-tooltip="{{::db.acountType}}" tooltip-placement="auto left">',
-              '<span class="fa fa-3x fa-user"></span>',
+              '<span class="fa fa-2x fa-user"></span>',
               '</a>',
               '<ul class="nav">',
               '<li ui-sref-active="active">',

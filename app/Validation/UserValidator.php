@@ -11,10 +11,12 @@ class UserValidator extends Violin
         $this->user = $user;
         $this->addFieldMessages([
             'email' => [
-                'uniqueEmail' => 'email already in use'
+                'uniqueEmail' => 'email already in use',
+                'uniqueEmailRoute' => 'email already in use'
             ],
             'username' => [
-                'uniqueUsername' => 'username already in use'
+                'uniqueUsername' => 'username already in use',
+                'uniqueUsernameRoute' => 'username already in use'
             ]
         ]);
     }
@@ -26,5 +28,33 @@ class UserValidator extends Violin
     public function validate_uniqueUsername($value, $input, $args)
     {
         return ! (bool) $this->user->where('username', $value)->count();
+    }
+    public function validate_uniqueEmailRoute($value, $input, $args)
+    {
+        $user = $this->user->where('id', $args[0])->first();
+        $users = $this->user->all();
+        $count =0;
+        for($i=0; $i<count($users); $i++){
+            if($users[$i]->email==$value){
+                if($users[$i]->id!=$user->id){
+                    $count++;
+                }
+            }
+        }
+        return !(bool)$count;
+    }
+    public function validate_uniqueUsernameRoute($value, $input, $args)
+    {
+        $user = $this->user->where('id', $args[0])->first();
+        $users = $this->user->all();
+        $count =0;
+        for($i=0; $i<count($users); $i++){
+            if($users[$i]->username==$value){
+                if($users[$i]->id!=$user->id){
+                    $count++;
+                }
+            }
+        }
+        return !(bool)$count;
     }
 }

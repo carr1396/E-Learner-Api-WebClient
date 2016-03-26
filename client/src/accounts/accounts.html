@@ -1,4 +1,15 @@
-<spider-dashboard>
+<spider-dashboard class="leaner-section">
   <spider-dashboard-menu routes="routes"></spider-dashboard-menu>
-  <spider-dashboard-content><ui-view name="accounts"></ui-view></spider-dashboard-content>
+  <spider-dashboard-bar>
+    <div class="wrapper">
+      <div class="wrapper-inner">
+        <img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="img-rounded dashboard-user-image">
+        <p class="pull-right">
+          <a type="button" class="btn btn-danger btn-xs" ui-sref="accounts.admin.super.index" ng-if="getCurrentUser().isSuperAdmin()">Super Administration</a>
+          <a type="button" class="btn btn-danger btn-xs" ui-sref="accounts.admin.schools.index" ng-if="getCurrentUser().isAdmin()">School Administrator</a>
+        </p>
+      </div>
+    </div>
+  </spider-dashboard-bar>
+  <spider-dashboard-content><div ui-view name="accounts" class="wrapper-inner"></div></spider-dashboard-content>
 </spider-dashboard>

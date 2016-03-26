@@ -7,9 +7,11 @@
   margin-bottom: 0;
 }
 .learner-section{
+  width: 100%;
   min-height: 85vh;
 }
 .home-section{
+  width: 100%;
   min-height: 100vh;
 }
 .button-bar-form{
@@ -22,4 +24,28 @@
   width: 49%;
   display: block;
   text-align: right;
+}
+.container-fluid, .container, .home-section, .learner-section{
+  position: relative;
+  box-sizing: border-box;
+}
+.flex-columns{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-column{
+  flex: 1;
+}
+.flex-column-3{
+  flex: 0 0 75%
+}
+.flex-column-4{
+  flex: 0 0 25%
+}
+
+.label-permissions{
+  display: inline-block;
+  text-size: 12px;
+  margin-right: 2px;
 }

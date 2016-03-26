@@ -76,7 +76,7 @@ class GuestController extends Controller
             $v->validate([
                 'username'    => [$identifier, 'required'],
                 'password'      => [$password, 'required']
-            ]);;
+            ]);
             if(!$v->passes()){
                 $data['code']=400;
                 $data['success']=false;
@@ -105,12 +105,12 @@ class GuestController extends Controller
                     $data['user']=User::with('roles')->find($user->id);
                     $roles = $user->roles;
 
-                    $role='';
-                    foreach($roles as $r){
-                        $role.=$r->name.'|';
-                    }
+//                    $role='';
+//                    foreach($roles as $r){
+//                        $role.=$r->name.'|';
+//                    }
                     $jwt = $this->settings['jwt'];
-                    $builder = new JWTHelper($jwt['iss'],$jwt['private_key'],$user->id, $role, $user->username );
+                    $builder = new JWTHelper($jwt['iss'],$jwt['private_key'],$user->id, 'admin', $user->username );
                     $token = $builder->generate_token();
                     $data['code']=200;
                     $data['success']=true;

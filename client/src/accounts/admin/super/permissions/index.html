@@ -1,0 +1,81 @@
+<div class="wrapper">
+  <div class="wrapper-inner">
+    <div>
+      <form ng-if="permission" class="form-inline" ng-submit="createOrEdit(createEditPermissionForm, permission)" name="createEditPermissionForm" novalidate style="padding-top:10px;">
+        <div class="alert alert-danger" ng-if="errors && errors.length>0 && createEditPermissionForm.$invalid">
+          <ul>
+            <li ng-if="createEditPermissionForm.name.$error.required">
+              Name Field Is Required
+            </li>
+            <li ng-if="createEditPermissionForm.name.$error.pattern">
+              Permission Name Should Be in format &lt;subjectname(between 4-16 characters)&gt;:&lt;actionname (between 4-16 characters)&gt; in lowercase
+            </li>
+            <li ng-if="createEditPermissionForm.name.$error.minlength">
+              Name Field Should Be Have Atleast 4 characters
+            </li>
+            <li ng-if="createEditPermissionForm.name.$error.maxlength">
+              Name Field Should Be Not Have more than 16 characters
+            </li>
+            <li ng-if="createEditPermissionForm.Description.$error.required">
+              Description Field Is Required
+            </li>
+            <li ng-if="createEditPermissionForm.description.$error.maxlength">
+              Description Field Should Not Have more than 40 characters
+            </li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="administration" ng-model="permission.name" required ng-minlength="4" ng-maxlength="16" ng-pattern="/^([a-z]{4,16})(:)([a-z]{4,16})$/">
+
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text" class="form-control" id="description", name='description' placeholder="Permission Description" ng-model="permission.description" ng-maxlength="40">
+        </div>
+        <button type="submit" class="btn btn-primary">{{ifPermissionExists(permission)?'Edit':'Create'}}</button>
+      </form>
+    </div>
+    <div>
+      <br>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                Permission
+              </th>
+              <th>
+                Desc
+              </th>
+              <th>
+              </th>
+              <th>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="r in permissions">
+              <td>
+                {{r.name}}
+              </td>
+              <td>
+                <a ui-sref="accounts.admin.super.permissions" type="button" class="btn btn-default btn-xs" uib-tooltip="{{r.description?r.description:'N/A'}}"><span class="fa fa-2x fa-eye"></span></a>
+              </td>
+              <td>
+                <a class="btn btn-primary btn-xs" ui-sref="accounts.admin.super.permissionsEdit({permissionId:r.id})" permission="button">
+                  <span class="fa fa-2x fa-edit"></span>
+                </a>
+              </td>
+              <td>
+                <button class="btn btn-danger btn-xs" ng-click="deleteThisPermission(r, $index)" permission="button">
+                  <span class="fa fa-2x fa-trash"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

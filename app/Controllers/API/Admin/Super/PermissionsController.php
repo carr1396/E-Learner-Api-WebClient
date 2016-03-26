@@ -8,17 +8,17 @@
 
 namespace Learner\Controllers\API\Admin\Super;
 
-use Learner\Validation\RoleValidator;
+use Learner\Validation\PermissionValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Learner\Controllers\Controller as BaseController;
-use Learner\Models\Role;
+use Learner\Models\Permission;
 
-class RolesController extends BaseController
+class PermissionsController extends BaseController
 {
     public function index(Request $request, Response $response, $args)
     {
-        return $response->withJson(Role::with('permissions')->get());
+        return $response->withJson(Permission::all());
     }
 
     public function show(Request $request, Response $response, $args)
@@ -33,7 +33,7 @@ class RolesController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        return $response->withJson(Role::with('permissions')->where('id', $args['id'])->first());
+        return $response->withJson(Permission::where('id', $args['id'])->first());
     }
     public function destroy(Request $request, Response $response, $args)
     {
@@ -47,8 +47,8 @@ class RolesController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        $role = Role::where('id', $args['id'])->first();
-        $role->delete();
+        $permission = Permission::where('id', $args['id'])->first();
+        $permission->delete();
         return $response->withJson(array("code"=>200, "deleted"=>true));
     }
     public function update(Request $request, Response $response, $args)
@@ -67,12 +67,6 @@ class RolesController extends BaseController
         $data = $this->jsonRequest->getRequestParams();
         $identifier   = isset($data['name'])?$data['name']:null;
         $description   = isset($data['description'])?$data['description']:null;
-        $permissions = isset($data['permissionsOut'])?$data['permissionsOut']:[];
-        $permissionsID =array();
-        foreach($permissions as $p){
-//            var_dump( $p);
-            array_push($permissionsID, $p['id']);
-        }
         if(count($data)<=0)
         {
             $data['code']=400;
@@ -82,16 +76,13 @@ class RolesController extends BaseController
             return $response;
         }else{
             $identifier = strtolower($identifier);
-            $v = new RoleValidator(new Role());
-            $validateArray = array();
-            if(!is_null($identifier)){
-                $validateArray[ 'name'] = [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(4)|max(16)'];
-            }
-            if(!is_null($description)){
-                $validateArray ['description'] = [$description, 'max(40)'];
-            }
-            $v->validate($validateArray);
+            $v = new PermissionValidator(new Permission());
+            $v->validate([
+                'name'    => [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(4)|max(16)'],
+                'description'      => [$description, 'max(40)']
+            ]);
             if(!$v->passes()){
+
                 $data['code']=400;
                 $data['success']=false;
                 $data['error'] = 'Some Errors Were Found';
@@ -99,33 +90,32 @@ class RolesController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $role = Role::where('id', $args['id'])->first();
+                $permission = Permission::where('id', $args['id'])->first();
                 if(!is_null($identifier))
                 {
-                    $role->name= $identifier;
+                    $permission->name= $identifier;
                 }
                 if(!is_null($description))
                 {
-                    $role->description = $description;
+                    $permission->description = $description;
                 }
-                $role->permissions()->sync($permissionsID);
-                $saved = $role->save();
 
+                $saved = $permission->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving Role';
+                    $data['error'] = 'Some thing Went Wrong While Saving Permission';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
 //                    $data =array();
-//                    $data['role']=$role;
+//                    $data['permission']=$permission;
 //                    $data['code']=200;
 //                    $data['success']=true;
 //                    $response = $this->jsonRender->render($response, 200, $data);
 //                    return $response;
-                    return $response->withJson(Role::with('permissions')->where('id', $args['id'])->first());
+                    return $response->withJson(Permission::where('id', $args['id'])->first());
                 }
             }
         }
@@ -153,12 +143,13 @@ class RolesController extends BaseController
             return $response;
         }else{
             $identifier = strtolower($identifier);
-            $v = new RoleValidator(new Role());
+            $v = new PermissionValidator(new Permission());
             $v->validate([
-                'name'    => [$identifier, 'required|uniqueName|min(4)|max(16)'],
+                'name'    => [$identifier, 'required|uniqueName|nameFormat|min(4)|max(16)'],
                 'description'      => [$description, 'max(40)']
             ]);
             if(!$v->passes()){
+//                preg_match("/^([a-z]{4,16})(:)([a-z]{4,16})$/", $identifier, $matches);
                 $data['code']=400;
                 $data['success']=false;
                 $data['error'] = 'Some Errors Were Found';
@@ -166,24 +157,24 @@ class RolesController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $role = new Role();
-                $role->name    = $identifier;
+                $permission = new Permission();
+                $permission->name    = $identifier;
                 if(!is_null($description))
                 {
-                    $role->description = $description;
+                    $permission->description = $description;
                 }
 
-                $saved = $role->save();
+                $saved = $permission->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving Role';
+                    $data['error'] = 'Some thing Went Wrong While Saving Permission';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
                     $data =array();
-                    $data['role']=Role::with('permissions')->where('id', $role->id)->first();
+                    $data['permission']=$permission;
                     $data['code']=200;
                     $data['success']=true;
                     $response = $this->jsonRender->render($response, 200, $data);

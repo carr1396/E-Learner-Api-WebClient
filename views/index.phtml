@@ -13,16 +13,17 @@
 
   <!-- bower:css -->
   <link rel="stylesheet" href="/client/dependencies/toastr/toastr.css" />
+  <link rel="stylesheet" href="/client/dependencies/isteven-angular-multiselect/isteven-multi-select.css" />
   <!-- endbower -->
   <link rel="stylesheet" href="/app/all.css" />
 
 </head>
 <body>
   <spider-navbar title="Adele's E-Leaner"></spider-navbar>
-  <div ui-view></div>
-  <footer class="container-fluid text-center">
+  <div ui-view class="wrapper"></div>
+  <!-- <footer class="container-fluid text-center leaner-footer" id="leaner-footer">
     E-Leaner 2015
-  </footer>
+  </footer> -->
   <script>
       window.CurrentBootstrappedUser =<?php echo json_encode($BOOTSTRAPUSER); ?>;
   </script>
@@ -44,6 +45,8 @@
   <script src="/client/dependencies/angular-socket-io/socket.js"></script>
   <script src="/client/dependencies/angular-local-storage/dist/angular-local-storage.js"></script>
   <script src="/client/dependencies/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="/client/dependencies/isteven-angular-multiselect/isteven-multi-select.js"></script>
+  <script src="/client/dependencies/angular-multi-chk/angular-multi-check.js"></script>
   <!-- endbower -->
   <script src="/js/all.js"></script>
 

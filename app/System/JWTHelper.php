@@ -95,10 +95,13 @@ class JWTHelper
     {
         $token = '';
         $auth_header = $headers['HTTP_AUTHORIZATION'];
-        $bearer = $auth_header[0];
-        $p = explode(' ', $bearer);
-        if(count($p)>1){
-            $token = trim($p[1]);
+        if(count($auth_header)>0)
+        {
+            $bearer = $auth_header[0];
+            $p = explode(' ', $bearer);
+            if(count($p)>1){
+                $token = trim($p[1]);
+            }
         }
         return $token;
     }
