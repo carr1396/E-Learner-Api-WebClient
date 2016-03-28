@@ -1,0 +1,18 @@
+<div class="panel panel-primary">
+<div class="panel-heading">
+  {{getCurrentUser().username}}'s Account
+  <span class="badge">Last Login On Thursday</span>
+</div>
+</div>
+<ul class="nav nav-pills">
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.settings.index" class="nav-link">Account</a>
+  </li>
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.settings.password" class="nav-link">Password</a>
+  </li>
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.settings.schools" class="nav-link">Schools</a>
+  </li>
+</ul>
+<div class="" ui-view="settings"></div>

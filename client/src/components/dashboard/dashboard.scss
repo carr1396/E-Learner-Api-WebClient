@@ -39,9 +39,10 @@ $dashboard-border: darken($dashboard-background, 10%);
     position: relative;
     img.dashboard-user-image
     {
-      width: 60px;
+      width: 52px;
       height: auto;
-      padding: 4px;
+      padding: 0;
+      margin: 0;
       display: inline-block;
     }
   }
@@ -73,8 +74,18 @@ $dashboard-border: darken($dashboard-background, 10%);
   .nav{
     margin: 0;
     padding: 0;
+    li:hover{
+      a{
+        background-color: #FF5722;
+      }
+    }
     li.active{
       border-right: 4px solid darken($dashboard-border, 5%);
+      background-color: #FF5722;
+      a{
+        background-color: #FF5722;
+        color: #f5f5f5;
+      }
     }
   }
   .nav > li > a{

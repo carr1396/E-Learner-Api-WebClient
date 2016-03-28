@@ -1,1 +1,59 @@
-Home
+<div class="panel panel-primary">
+<div class="panel-heading">
+  {{getCurrentUser().username}}'s Account
+  <span class="badge">Last Login On Thursday</span>
+</div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card card-dark text-center">
+        <h4 class="display-4">Are You A School Admisnistartor?</h4>
+        <p>
+           Register Your School Below To Allow Your Students To Access Course Material And Lectures Online
+        </p>
+        <div class="btn-group" role="group" aria-label="Button group">
+          <a type="button" class="btn btn-success btn-sm" ui-sref="accounts.settings.schools">Its Free!!</a>
+          <a type="button" class="btn btn-primary btn-sm" ui-sref="guests.index">See Guidlines</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-8">
+      <div class="col-sm-4">
+        <div class="card">
+          <h5>School Infomation</h5>
+          <hr>
+          <p ng-if="user.school">
+
+          </p>
+          <p ng-if="!user.school" class="text-danger">
+            You Havent Added Your School Information Yet, Please Contact Your School Admin To Add You
+          </p>
+        </div>
+        <div class="card">
+          <h5>Course Information</h5>
+          <hr>
+          <p ng-if="user.courses">
+
+          </p>
+          <p ng-if="!user.courses || user.courses.length<=0" class="text-danger">
+            You Havent Added Your Course Information, Please Contact Your School Update This Information
+          </p>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div class="card">
+          <h5>Account History</h5>
+          <hr>
+          <p ng-if="user.history">
+
+          </p>
+          <p ng-if="!user.history || user.history.length<=0" class="text-danger">
+            No Activity Logeed For This Account Yet
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

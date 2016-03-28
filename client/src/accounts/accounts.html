@@ -3,7 +3,9 @@
   <spider-dashboard-bar>
     <div class="wrapper">
       <div class="wrapper-inner">
-        <img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="img-rounded dashboard-user-image">
+        <!-- <img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="img-rounded dashboard-user-image"> -->
+        <a href="#"><img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="img-thumbnail dashboard-user-image"></a>
+        <span class="clock">10:08 pm</span>
         <p class="pull-right">
           <a type="button" class="btn btn-danger btn-xs" ui-sref="accounts.admin.super.index" ng-if="getCurrentUser().isSuperAdmin()">Super Administration</a>
           <a type="button" class="btn btn-danger btn-xs" ui-sref="accounts.admin.schools.index" ng-if="getCurrentUser().isAdmin()">School Administrator</a>

@@ -6,19 +6,20 @@
  * Time: 1:20 AM
  */
 
-namespace Learner\Controllers\API\Admin\Super;
+namespace Learner\Controllers\API\Admin;
 
-use Learner\Validation\UserValidator;
+use Learner\Models\Role;
+use Learner\Validation\SchoolValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Learner\Controllers\Controller as BaseController;
-use Learner\Models\User;
+use Learner\Models\School;
 
-class UsersController extends BaseController
+class SchoolsController extends BaseController
 {
     public function index(Request $request, Response $response, $args)
     {
-        return $response->withJson(User::with('roles')->get());
+        return $response->withJson(School::all());
     }
 
     public function show(Request $request, Response $response, $args)
@@ -33,7 +34,7 @@ class UsersController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        return $response->withJson(User::with('roles')->where('id', $args['id'])->first());
+        return $response->withJson(School::where('id', $args['id'])->first());
     }
     public function destroy(Request $request, Response $response, $args)
     {
@@ -47,53 +48,9 @@ class UsersController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        $user = User::with('roles')->where('id', $args['id'])->first();
-        $user->delete();
+        $school = School::where('id', $args['id'])->first();
+        $school->delete();
         return $response->withJson(array("code"=>200, "deleted"=>true));
-    }
-    public function changePassword(Request $request, Response $response, $args)
-    {
-
-        if(!isset($args['id']))
-        {
-            $data=array();
-            $data['code']=400;
-            $data['success']=false;
-            $data['error'] = 'ID Not Specified';
-            $response = $this->jsonRender->render($response, 400, $data);
-            return $response;
-        }
-        $this->jsonRequest->setRequest($request);
-        $data = $this->jsonRequest->getRequestParams();
-        if(count($data)<=0)
-        {
-            $data['code']=400;
-            $data['success']=false;
-            $data['error'] = 'Post Sent Without Body';
-            $response = $this->jsonRender->render($response, 400, $data);
-            return $response;
-        }else{
-            $password   = $data['password'];
-            $passwordConfirm = $data['confirmPassword'];
-            $v = new UserValidator(new User);
-            $v->validate([
-                'password'  => [$password, 'required|min(8)'],
-                'password_confirm' => [$passwordConfirm, 'required|matches(password)']
-            ]);
-            $user = User::with('roles')->where('id', $args['id'])->first();
-            $user->password=$password;
-            $saved =$user->save();
-            if(!$saved)
-            {
-                $data['code']=400;
-                $data['success']=false;
-                $data['error'] = 'Some thing Went Wrong While Saving User';
-                return  $this->jsonRender->render($response, 400, $data);
-            }else{
-                return $response->withJson($user);
-            }
-
-        }
     }
     public function update(Request $request, Response $response, $args)
     {
@@ -109,17 +66,8 @@ class UsersController extends BaseController
         }
         $this->jsonRequest->setRequest($request);
         $data = $this->jsonRequest->getRequestParams();
-        $email      = isset($data['email'])?$data['email']:null;
-        $username   = isset($data['username'])?$data['username']:null;
-        $roles = isset($data['rolesCheckModel'])?$data['rolesCheckModel']:array();
-        $roleIDs=array();
-        foreach($roles as $r){
-            if($r['checked'])
-            {
-                array_push($roleIDs, $r['id']);
-            }
-        }
-
+        $identifier   = isset($data['name'])?$data['name']:null;
+        $description   = isset($data['description'])?$data['description']:null;
         if(count($data)<=0)
         {
             $data['code']=400;
@@ -128,11 +76,11 @@ class UsersController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }else{
-            $username = strtolower($username);
-            $v = new UserValidator(new User());
+            $identifier = strtolower($identifier);
+            $v = new SchoolValidator(new School());
             $v->validate([
-                'email'     => [$email, 'required|email|uniqueEmailRoute('.$args['id'].')'],
-                'username'  => [$username, 'required|alnumDash|max(20)|min(6)|uniqueUsernameRoute('.$args['id'].')'],
+                'name'    => [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(4)|max(16)'],
+                'description'      => [$description, 'max(40)']
             ]);
             if(!$v->passes()){
 
@@ -143,32 +91,26 @@ class UsersController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $user = User::where('id', $args['id'])->first();
-                if(!is_null($username))
+                $school = School::where('id', $args['id'])->first();
+                if(!is_null($identifier))
                 {
-                    $user->username= $username;
+                    $school->name= $identifier;
                 }
-                if(!is_null($email))
+                if(!is_null($description))
                 {
-                    $user->email = $email;
+                    $school->description = $description;
                 }
-                $user->roles()->sync($roleIDs);
-                $saved = $user->save();
+
+                $saved = $school->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving User';
+                    $data['error'] = 'Some thing Went Wrong While Saving School';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
-//                    $data =array();
-//                    $data['user']=$user;
-//                    $data['code']=200;
-//                    $data['success']=true;
-//                    $response = $this->jsonRender->render($response, 200, $data);
-//                    return $response;
-                    return $response->withJson(User::with('roles')->where('id', $args['id'])->first());
+                    return $response->withJson(School::where('id', $args['id'])->first());
                 }
             }
         }
@@ -186,6 +128,8 @@ class UsersController extends BaseController
         $this->jsonRequest->setRequest($request);
         $data = $this->jsonRequest->getRequestParams();
         $identifier   = isset($data['name'])?$data['name']:null;
+        $abbrev   = isset($data['abbrev'])?$data['abbrev']:null;
+        $private   = isset($data['private'])?$data['private']:null;
         $description   = isset($data['description'])?$data['description']:null;
         if(count($data)<=0)
         {
@@ -195,14 +139,13 @@ class UsersController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }else{
-            $identifier = strtolower($identifier);
-            $v = new UserValidator(new User());
+            $v = new SchoolValidator(new School());
             $v->validate([
-                'name'    => [$identifier, 'required|uniqueName|nameFormat|min(4)|max(16)'],
-                'description'      => [$description, 'max(40)']
+                'name'    => [$identifier, 'required|uniqueName|min(8)'],
+                'abbrev' =>[$abbrev, 'required|min(3)|max(8)'],
+                'description'      => [$description, 'min(40)']
             ]);
             if(!$v->passes()){
-//                preg_match("/^([a-z]{4,16})(:)([a-z]{4,16})$/", $identifier, $matches);
                 $data['code']=400;
                 $data['success']=false;
                 $data['error'] = 'Some Errors Were Found';
@@ -210,26 +153,37 @@ class UsersController extends BaseController
                 $response = $this->jsonRender->render($response, 400, $data);
                 return $response;
             }else{
-                $user = new User();
-                $user->name    = $identifier;
+                $school = new School();
+                $school->name   = $identifier;
+                $school->abbrev   = $abbrev;
+                $school->private = $private;
                 if(!is_null($description))
                 {
-                    $user->description = $description;
+                    $school->description = $description;
                 }
 
-                $saved = $user->save();
+
+                $saved = $school->save();
                 if(!$saved)
                 {
                     $data['code']=400;
                     $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving User';
+                    $data['error'] = 'Some thing Went Wrong While Saving School';
                     $response = $this->jsonRender->render($response, 400, $data);
                     return $response;
                 }else{
                     $data =array();
-                    $data['user']=User::with('roles')->where('id', $user->id)->first();
+                    $data['school']=$school;
                     $data['code']=200;
                     $data['success']=true;
+                    $admin = Role::where('name', 'admin')->first();
+                    $isAdmin = false;
+                    if(!is_null($admin))
+                    {
+                        $this->auth->user()->roles()->sync([$admin->id]);
+                        $isAdmin= true;
+                    }
+                    $data['isAdmin'] = $isAdmin;
                     $response = $this->jsonRender->render($response, 200, $data);
                     return $response;
                 }

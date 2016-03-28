@@ -1,10 +1,10 @@
 (function(){
   'use strict';
-  angular.module('learnerApp').
-  factory('Authentication', ['Toastr', '$q', '$http', '$window', 'localStorageService', 'User',
+  angular.module('learnerApp')
+  .factory('Authentication', ['Toastr', '$q', '$http', '$window', 'localStorageService', 'User', 'APIBASEURL',
     function(
       Notification,
-      $q, $http, $window,localStorageService, User) {
+      $q, $http, $window,localStorageService, User, APIBASEURL) {
       var currentUser = null;
       if (!!$window.CurrentBootstrappedUser) {
         var user = new User();
@@ -24,6 +24,18 @@
             localStorageService.remove('_token');
           }
           currentUser = user;
+        },
+        reAuthenticateUser: function reAuthenticateUser() {
+          var defered = $q.defer();
+          User.get({id:'me'}).$promise.then(function(res) {
+            // console.log(res);
+            Authentication.authenticateUser(res, localStorageService.get('_token'));
+            defered.resolve(res);
+          }, function(err) {
+            // console.log(err);
+            defered.reject(err);
+          });
+          return defered.promise;
         },
         signOut: function singOutUser() {
           Authentication.authenticateUser(null, null);
@@ -89,6 +101,26 @@
             defered.resolve(res);
           }, function(err) {
             // console.log(err);
+            defered.reject(err);
+          });
+          return defered.promise;
+        },
+        changePassword: function changedSignedInUserPassword(user_id, password, confirmPassword) {
+          var defered = $q.defer();
+          $http.put(APIBASEURL+'/users/'+user_id+'/password', {
+            password: password,
+            confirmPassword: confirmPassword
+          }).then(function(res) {
+            var user = new User();
+            if(res.data.success)
+            {
+              angular.extend(user, res.data.user);
+              Authentication.authenticateUser(user, res.data.token);
+              defered.resolve(res.data.user);
+            }else{
+              defered.reject(res);
+            }
+          }, function(err) {
             defered.reject(err);
           });
           return defered.promise;

@@ -6,7 +6,7 @@
  * Time: 1:20 AM
  */
 
-namespace Learner\Controllers\API\Admin\Super;
+namespace Learner\Controllers\API;
 
 use Learner\Validation\UserValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -20,7 +20,10 @@ class UsersController extends BaseController
     {
         return $response->withJson(User::with('roles')->get());
     }
-
+    public function me(Request $request, Response $response, $args)
+    {
+        return $response->withJson($this->auth->profile());
+    }
     public function show(Request $request, Response $response, $args)
     {
 
@@ -173,68 +176,6 @@ class UsersController extends BaseController
             }
         }
 
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param $args
-     * @return Response
-     */
-    public function store(Request $request, Response $response, $args)
-    {
-        $this->jsonRequest->setRequest($request);
-        $data = $this->jsonRequest->getRequestParams();
-        $identifier   = isset($data['name'])?$data['name']:null;
-        $description   = isset($data['description'])?$data['description']:null;
-        if(count($data)<=0)
-        {
-            $data['code']=400;
-            $data['success']=false;
-            $data['error'] = 'Post Sent Without Body';
-            $response = $this->jsonRender->render($response, 400, $data);
-            return $response;
-        }else{
-            $identifier = strtolower($identifier);
-            $v = new UserValidator(new User());
-            $v->validate([
-                'name'    => [$identifier, 'required|uniqueName|nameFormat|min(4)|max(16)'],
-                'description'      => [$description, 'max(40)']
-            ]);
-            if(!$v->passes()){
-//                preg_match("/^([a-z]{4,16})(:)([a-z]{4,16})$/", $identifier, $matches);
-                $data['code']=400;
-                $data['success']=false;
-                $data['error'] = 'Some Errors Were Found';
-                $data['errors']= $v->errors()->all();
-                $response = $this->jsonRender->render($response, 400, $data);
-                return $response;
-            }else{
-                $user = new User();
-                $user->name    = $identifier;
-                if(!is_null($description))
-                {
-                    $user->description = $description;
-                }
-
-                $saved = $user->save();
-                if(!$saved)
-                {
-                    $data['code']=400;
-                    $data['success']=false;
-                    $data['error'] = 'Some thing Went Wrong While Saving User';
-                    $response = $this->jsonRender->render($response, 400, $data);
-                    return $response;
-                }else{
-                    $data =array();
-                    $data['user']=User::with('roles')->where('id', $user->id)->first();
-                    $data['code']=200;
-                    $data['success']=true;
-                    $response = $this->jsonRender->render($response, 200, $data);
-                    return $response;
-                }
-            }
-        }
     }
 
 }

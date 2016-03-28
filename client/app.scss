@@ -110,13 +110,7 @@ body{
 .text-danger{
   color: $state-danger-text;
 }
-// .leaner-footer
-// {
-//   margin-top: 15px;
-//   padding-top: 15px;
-//   width: 100%;
-//   min-height: 10vh;
-//   background: $brand-primary;
-//   position: fixed;
-//   bottom: 0;
-// }
+
+h1, h2, h3, h4, h5, h6, a, label, .label{
+  text-transform: uppercase;
+}

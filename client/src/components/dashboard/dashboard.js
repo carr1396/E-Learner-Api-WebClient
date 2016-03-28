@@ -53,7 +53,7 @@
               '<span class="fa fa-2x fa-home"></span>',
               '</a>',
               '</li>',
-              '<li ui-sref-active="active" ng-repeat="link in db.routes">',
+              '<li ng-class="{active:db.isActiveIsNameContains(link.type)}" ng-repeat="link in db.routes" ng-if="link.visible">',
               '<a ui-sref="{{link.name?link.name:link.url}}" uib-tooltip="{{link.text}}" tooltip-placement="auto left">',
               '<span class="fa fa-2x fa-{{link.icon?link.icon:db.defaultLinkIcon}}"></span>',
               '</a>',
@@ -64,12 +64,15 @@
             var link = function linkFactoryFunction(scope, el, atts, ctrl,
                                                     transclude) {};
             var spiderDashboardMenuCtrl = [
-              function spiderDashboardCtrl() {
+              '$state',
+              function spiderDashboardCtrl($state) {
                 var db = this;
                 db.currentLocation = "accounts.index";
                 db.acountType = "Admin";
                 db.defaultLinkIcon = "link";
-                // console.log(db.routes);
+                db.isActiveIsNameContains = function isActiveLink(name) {
+                  return $state.current.name.indexOf(name) != -1;
+                };
               }
             ];
             var directiveDefinitionObject = {

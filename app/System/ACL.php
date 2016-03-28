@@ -14,6 +14,7 @@ use Learner\Models\User;
 class ACL
 {
     private $session;
+
     public function __construct()
     {
         $this->session = new Session;
@@ -27,14 +28,27 @@ class ACL
     public function profile()
     {
         $user = null;
-        if(isset($_SESSION['token']))
-        {
+        if (isset($_SESSION['token'])) {
             $token = JWTHelper::parse_token($_SESSION['token']);
-            $user_id=$token->getClaim('user_id');
+            $user_id = $token->getClaim('user_id');
             $user = User::with('roles')->find($user_id);
-        }else if(isset($_SESSION['user_id'])){
+        } else if (isset($_SESSION['user_id'])) {
 
             $user = User::with('roles')->find($_SESSION['user_id']);
+        }
+        return $user;
+    }
+
+    public function user()
+    {
+        $user = null;
+        if (isset($_SESSION['token'])) {
+            $token = JWTHelper::parse_token($_SESSION['token']);
+            $user_id = $token->getClaim('user_id');
+            $user = User::find($user_id);
+        } else if (isset($_SESSION['user_id'])) {
+
+            $user = User::find($_SESSION['user_id']);
         }
         return $user;
     }
