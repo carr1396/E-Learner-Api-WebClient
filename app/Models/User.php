@@ -11,7 +11,7 @@ class User extends Eloquent {
 	 */
 	protected $table = 'users';
 
-	protected $fillable =['username', 'email', 'password', 'display_name', 'full_name'];
+	protected $fillable =['username', 'email', 'password', 'display_name', 'full_name', 'id_number'];
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *

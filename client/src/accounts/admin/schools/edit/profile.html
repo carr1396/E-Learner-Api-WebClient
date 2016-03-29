@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Editing/ View:
+      </div>
+    </div>
+    <form name="editSchoolForm" class="form-horizontal" ng-submit="createSchool(editSchoolForm)" novalidate="Form is Invalid">
+      <div class="col-xs-8">
+        <div class="alert alert-danger" ng-if="errors && errors.length>0 && createEditRoleForm.$invalid">
+          <ul>
+            <li ng-repeat="err in errors">
+              err
+            </li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="name">Univeristy/School Name</label>
+          <input type="text" name="name"  class="form-control" ng-model="school.name" required="This Field is Required" ng-minlength="8">
+          <!-- <p class="help-block text-danger" ng-if="editSchoolForm.name.$touched && editSchoolForm.name.$error.name">
+            Wrong Email Format Please Enter A Valid Email
+          </p> -->
+          <div class="alert alert-danger" ng-if="editSchoolForm.$submitted && !editSchoolForm.name.$valid">
+            <p ng-if="editSchoolForm.name.$error.required">Name Field Is Required.</p>
+            <p ng-if="editSchoolForm.name.$error.minlength">Name Should Be Atleast 8 Characters</p>
+            <p ng-if="editSchoolForm.name.$error.pattern">Wrong School Name Format.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <br>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="school.private" ng-checked="school.private===1">
+            School Is Private
+          </label>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="abbrev">Abbreviation</label>
+          <input type="text" name="abbrev"  class="form-control" ng-model="school.abbrev" required="This Field is Required" ng-minlength="3" ng-maxlength="8">
+          <!-- <p class="help-block text-danger" ng-if="editSchoolForm.name.$touched && editSchoolForm.name.$error.name">
+            Wrong Email Format Please Enter A Valid Email
+          </p> -->
+          <div class="alert alert-danger" ng-if="editSchoolForm.$submitted && !editSchoolForm.abbrev.$valid">
+            <p ng-if="editSchoolForm.abbrev.$error.required">Abbreviation Field Is Required.</p>
+            <p ng-if="editSchoolForm.abbrev.$error.minlength">Abbreviation Should Be Atleast 3 Characters</p>
+            <p ng-if="editSchoolForm.abbrev.$error.maxlength">Abbreviation Should Be Not Be More Than 8 Characters</p>
+            <p ng-if="editSchoolForm.abbrev.$error.pattern">Wrong School Abbreviation Format.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea rows="8" cols="40" name="description"  class="form-control" ng-model="school.description" ng-minlength="40" required="Descripition Is Required"></textarea>
+          <div class="alert alert-danger" ng-if="editSchoolForm.$submitted && !editSchoolForm.description.$valid">
+            <p ng-if="editSchoolForm.description.$error.required">Descripition Is Required.</p>
+            <p ng-if="editSchoolForm.description.$error.minlength">Description Should Be Atleast 40 Characters</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="alert alert-info">
+          <h5>Note:</h5>
+          For Asthetic Purposes Use Proper Title Case When Entering Your School Title. And Use Proper Punctuation And Casing For The
+          Description.
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <input type="submit" name="update" value="Update" class="btn btn-success btn-block">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

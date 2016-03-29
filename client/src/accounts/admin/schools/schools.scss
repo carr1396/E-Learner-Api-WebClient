@@ -1,0 +1,8 @@
+.nav-tabs {
+  li.nav-item{
+    &.active{
+      border-right: 0;
+      border-bottom: 2px solid #555;
+    }
+  }
+}

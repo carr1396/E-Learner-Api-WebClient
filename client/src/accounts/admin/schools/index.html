@@ -1,27 +1,29 @@
 <div class="container-fluid">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      Your School(s): <span class="badge">{{schools.length}}</span>
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Your School(s): <span class="badge">{{schools.length}}</span>
+      </div>
     </div>
-  </div>
-  <button type="button" name="refresh" class="btn btn-info btn-sm pull-right" ng-click="refreshSchools()">Refresh <i class="fa fa-refresh"></i></button>
-  <div class="jumbotron-hr text-center" ng-if="!schools || schools.length<=0">
-    <p class="text-danger">
-      You Have No Schools Added Yet. If You Already Added A School But It Is Not Showing Click Refresh
-    </p>
-    <p>
-      <i class="fa fa-5x fa-refresh"></i>
-    </p>
-  </div>
-  <div class="card-deck-wrapper">
-    <div class="card-deck">
-      <div class="card"  ng-repeat="s in schools">
-        <img class="card-img-top" src="/images/user.png" alt="Card image cap" width="96px">
-        <div class="card-block">
-          <a ui-sref="accounts.admin.schools.edit({schoolId: s.id})" class="btn btn-sm btn-primary pull-right"><i class="fa fa-eye"></i></a>
-          <h4 class="card-title">{{s.name}} ( {{s.abbrev}})</h4>
-          <p class="card-text">{{s.description}}</p>
-          <p class="card-text"><small class="text-muted">{{s.updated_at}}</small></p>
+    <button type="button" name="refresh" class="btn btn-info btn-sm pull-right" ng-click="refreshSchools()">Refresh <i class="fa fa-refresh"></i></button>
+    <div class="jumbotron-hr text-center" ng-if="!schools || schools.length<=0">
+      <p class="text-danger">
+        You Have No Schools Added Yet. If You Already Added A School But It Is Not Showing Click Refresh
+      </p>
+      <p>
+        <i class="fa fa-5x fa-refresh"></i>
+      </p>
+    </div>
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
+        <div class="card"  ng-repeat="s in schools">
+          <img class="card-img-top" src="/images/user.png" alt="Card image cap" width="96px">
+          <div class="card-block">
+            <a ui-sref="accounts.admin.schools.edit.profile({schoolId: s.id})" class="btn btn-sm btn-primary pull-right"><i class="fa fa-eye"></i></a>
+            <h4 class="card-title">{{s.name}} ( {{s.abbrev}})</h4>
+            <p class="card-text">{{s.description}}</p>
+            <p class="card-text"><small class="text-muted">{{s.updated_at}}</small></p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+   <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        API Settings:
+      </div>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <!-- <code></code> -->
+        <p class="text-muted">
+          You Can Do A Batch Update Or Registration Of Students/Lecturers/Courses
+          Via Your API, Currently We Only Support JSON. For Required Fields Each Object (eg A Student Or Lecturer) Should Have See
+          <a href="#" class="text-info">Guidelines</a>
+          <br>
+          <code>Note If API needs Authorization Add Authorization (keys, tokens) as query Strings as we do not support headers yet</code>
+        </p>
+    </div>
+    <form class="form" role="form" name="APISettingsForm" ng-submit="updateAPISettings(APISettingsForm)">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="api_base_url">API Base URL</label>
+          <input type="text" class="form-control" placeholder="Example : www.myschool.com/api/v2" name="api_base_url" ng-model="school.api_base_url">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="admin_verification_url">Administration Verification URL</label>
+          <input type="text" class="form-control" placeholder="Verification For Administrator" name="admin_verification_url" ng-model="school.admin_verification_url">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="student_update_url">Student Update URL</label>
+          <input type="text" class="form-control" placeholder="Return JSON Array OF Students" name="student_update_url" ng-model="school.student_update_url">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="lecturer_update_url">Lecturer Update URL</label>
+          <input type="text" class="form-control" placeholder="Return JSON Array OF Lecturers" name="lecturer_update_url" ng-model="school.lecturer_update_url">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="course_update_url">Course Update URL</label>
+          <input type="text" class="form-control" placeholder="Return JSON Array OF Courses" name="course_update_url" ng-model="school.course_update_url">
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <input type="submit" name="update" value="Update School API" class="btn btn-success btn-block">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

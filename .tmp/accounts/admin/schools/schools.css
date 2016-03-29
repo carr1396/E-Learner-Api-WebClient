@@ -1,0 +1,6 @@
+.nav-tabs li.nav-item.active {
+  border-right: 0;
+  border-bottom: 2px solid #555;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNjaG9vbHMuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLDhCQUE4QjtDQUMvQiIsImZpbGUiOiJhY2NvdW50cy9hZG1pbi9zY2hvb2xzL3NjaG9vbHMuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm5hdi10YWJzIGxpLm5hdi1pdGVtLmFjdGl2ZSB7XG4gIGJvcmRlci1yaWdodDogMDtcbiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkICM1NTU7XG59XG4iXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0= */

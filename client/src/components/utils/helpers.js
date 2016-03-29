@@ -8,7 +8,7 @@
               return string.charAt(0).toUpperCase() + string.slice(1);
             },
             stringAContainsB : function ifStringAContainsB(strA, strB) {
-              return strA.indexOf(strB) != -1;
+              return strA.indexOf(strB) !== -1;
             },
             convertStringToTitleCase : function convertStringToTitleCase(str) {
               return str.replace(/\w\S*/g, function(txt) {
