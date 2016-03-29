@@ -53,7 +53,7 @@
               '<span class="fa fa-2x fa-home"></span>',
               '</a>',
               '</li>',
-              '<li ng-class="{active:db.isActiveIsNameContains(link.type)}" ng-repeat="link in db.routes" ng-if="link.visible">',
+              '<li ng-class="{active:db.isActiveIfNameContains(link.type)}" ng-repeat="link in db.routes" ng-if="link.visible">',
               '<a ui-sref="{{link.name?link.name:link.url}}" uib-tooltip="{{link.text}}" tooltip-placement="auto left">',
               '<span class="fa fa-2x fa-{{link.icon?link.icon:db.defaultLinkIcon}}"></span>',
               '</a>',
@@ -70,7 +70,7 @@
                 db.currentLocation = "accounts.index";
                 db.acountType = "Admin";
                 db.defaultLinkIcon = "link";
-                db.isActiveIsNameContains = function isActiveLink(name) {
+                db.isActiveIfNameContains = function isActiveLink(name) {
                   return $state.current.name.indexOf(name) != -1;
                 };
               }

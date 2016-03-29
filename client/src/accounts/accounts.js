@@ -78,8 +78,13 @@
         'Authentication',
         'Toastr',
         'Helpers',
-        function($scope, Authentication, Toastr, Helpers) {
+        '$state',
+        function($scope, Authentication, Toastr, Helpers, $state) {
           $scope.title = 'Accounts';
+
+          $scope.isActiveIfNameContains = function isActiveLink(name) {
+            return $state.current.name.indexOf(name) != -1;
+          };
 
           $scope.getCurrentUser = Authentication.getCurrentUser;
           $scope.isAuthenticated = Authentication.isAuthenticated;

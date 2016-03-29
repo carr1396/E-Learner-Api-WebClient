@@ -21,7 +21,15 @@ class SchoolsController extends BaseController
     {
         return $response->withJson(School::all());
     }
+    public function me(Request $request, Response $response, $args)
+    {
+        return $response->withJson(School::where('creator_id', $this->auth->user()->id)->get());
+    }
 
+    public function publicSchools(Request $request, Response $response, $args)
+    {
+        return $response->withJson(School::where('private', 0)->get());
+    }
     public function show(Request $request, Response $response, $args)
     {
 
@@ -157,6 +165,7 @@ class SchoolsController extends BaseController
                 $school->name   = $identifier;
                 $school->abbrev   = $abbrev;
                 $school->private = $private;
+                $school->creator_id = $this->auth->user()->id;
                 if(!is_null($description))
                 {
                     $school->description = $description;

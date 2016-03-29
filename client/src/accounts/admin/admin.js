@@ -1,7 +1,10 @@
 (function() {
   'use strict';
   angular.module('leanerAccountAdministrationModule',
-                 [ 'leanerAccountAdministrationSuperModule' ])
+                 [
+                   'leanerAccountAdministrationSuperModule',
+                   'leanerAccountAdministrationSchoolModule'
+                 ])
       .config([
         '$locationProvider',
         '$stateProvider',
@@ -27,31 +30,11 @@
                                 }
                               }
                             })
-              .state('accounts.admin.index',
-                     {
-                       url : '/',
-                       views : {
-                         "administration" :
-                             {templateUrl : "app/accounts/admin/index.html"}
-                       }
-                     })
-              .state(
-                  'accounts.admin.schools',
-                  {
-                    url : '/schools/:schoolId',
-                    abstract : true,
-                    views : {
-                      "administration" : {
-                        templateUrl : "app/accounts/admin/schools/schools.html",
-                      }
-                    }
-                  })
-              .state('accounts.admin.schools.index', {
-                url : '',
+              .state('accounts.admin.index', {
+                url : '/',
                 views : {
-                  "schools" : {
-                    templateUrl : "app/accounts/admin/schools/index.html"
-                  }
+                  "administration" :
+                      {templateUrl : "app/accounts/admin/index.html"}
                 }
               });
 

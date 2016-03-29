@@ -15,12 +15,27 @@
       //     controller: 'password'
       //   }
       // },
-      // get: {
-      //   method: 'GET',
-      //   params: {
-      //     id: 'me'
-      //   }
-      // }
+      mine: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          id: 'me'
+        }
+      },
+      available: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          id: 'public'
+        }
+      },
+      subscriptions: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          id: 'me'
+        }
+      }
     });
     return School;
   }]);
