@@ -9,6 +9,7 @@
         method: 'PUT', // this method issues a PUT request,
         isArray: false
       },
+      
       // changePassword: {
       //   method: 'PUT',
       //   params: {

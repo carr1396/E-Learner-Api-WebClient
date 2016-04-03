@@ -19,7 +19,7 @@
         <div class="card"  ng-repeat="s in schools">
           <img class="card-img-top" src="/images/user.png" alt="Card image cap" width="96px">
           <div class="card-block">
-            <a ui-sref="accounts.admin.schools.edit.profile({schoolId: s.id})" class="btn btn-sm btn-primary pull-right"><i class="fa fa-eye"></i></a>
+            <a ui-sref="accounts.admin.schools.edit.profile({schoolId: s.id})" class="btn btn-sm  btn-primary pull-right"><i class="fa fa-eye"></i>/ <i class="fa fa-edit"></i></a>
             <h4 class="card-title">{{s.name}} ( {{s.abbrev}})</h4>
             <p class="card-text">{{s.description}}</p>
             <p class="card-text"><small class="text-muted">{{s.updated_at}}</small></p>

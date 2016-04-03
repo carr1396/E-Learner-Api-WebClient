@@ -75,6 +75,8 @@ class SchoolsController extends BaseController
         $this->jsonRequest->setRequest($request);
         $data = $this->jsonRequest->getRequestParams();
         $identifier   = isset($data['name'])?$data['name']:null;
+        $abbrev   = isset($data['abbrev'])?$data['abbrev']:null;
+        $private   = isset($data['private'])?$data['private']:null;
         $description   = isset($data['description'])?$data['description']:null;
         if(count($data)<=0)
         {
@@ -84,11 +86,11 @@ class SchoolsController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }else{
-            $identifier = strtolower($identifier);
             $v = new SchoolValidator(new School());
             $v->validate([
-                'name'    => [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(4)|max(16)'],
-                'description'      => [$description, 'max(40)']
+                'name'    => [$identifier, 'required|uniqueNameRoute('.$args['id'].')|min(8)'],
+                'abbrev' =>[$abbrev, 'required|min(3)|max(8)'],
+                'description'      => [$description, 'min(40)']
             ]);
             if(!$v->passes()){
 
@@ -107,6 +109,14 @@ class SchoolsController extends BaseController
                 if(!is_null($description))
                 {
                     $school->description = $description;
+                }
+                if(!is_null($abbrev))
+                {
+                    $school->abbrev = $abbrev;
+                }
+                if(!is_null($private))
+                {
+                    $school->private = $private;
                 }
 
                 $saved = $school->save();
