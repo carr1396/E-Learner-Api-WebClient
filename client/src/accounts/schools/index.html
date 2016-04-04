@@ -1,34 +1,51 @@
 <div class="container-fluid">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      Here Is A List Of Schools You Can Subscribe To: <span class="badge">Subscribed {{subscriptions.length}}, Public {{schools.length}}</span>
+      Here Is A List Of Schools You Can Subscribe To: <span class="badge">Subscribed {{memberships.length}}, Public {{schools.length}}</span>
     </div>
   </div>
   <button type="button" name="refresh" class="btn btn-info btn-sm pull-right" ng-click="refreshSchools()">Refresh <i class="fa fa-refresh"></i></button>
   <div class="clearfix"></div>
   <div class="jumbotron-hr text-center">
-    <p class="text-danger"  ng-if="!schools || schools.length<=0">
+    <p class="text-danger"  ng-if="!memberships || memberships.length<=0">
       You Have Not  Subscribed To Any Schools Yet, If You Are Looking To Subscribe To A School You Attend Contact Your Administration For Support
     </p>
-    <p class="text-danger"  ng-if="!subscriptions || subscriptions.length<=0">
+    <p class="text-danger"   ng-if="!schools || schools.length<=0">
       There Are No Public Schools Registered yet
     </p>
     <p>
       To Subscribe Our Access Any Of Your Course Information Please Download Our Android App <a ui-sref="guests.index"><i class="fa fa-2x fa-android"></i> E-Leaner App</a>
     </p>
-    <p>
+    <p ng-if="!memberships || !schools">
       <i class="fa fa-5x fa-refresh"></i>
     </p>
   </div>
   <div class="card-deck-wrapper">
     <div class="card-deck">
+      <p ng-if="memberships.length>0">
+        Subscriptions
+      </p>
+      <div class="card"  ng-repeat="s in memberships">
+        <img class="card-img-top" src="/images/user.png" alt="Card image cap" width="96px">
+        <div class="card-block">
+          <a ui-sref="accounts.schools.show({schoolId: s.school.id})" class="btn btn-sm btn-primary pull-right">View <i class="fa fa-eye"></i></a>
+          <h4 class="card-title">{{s.school.name}} ({{s.school.abbrev}})</h4>
+          <p class="card-text">{{s.school.description}}</p>
+          <p class="card-text"><small class="text-muted">Subscribed Since: {{s.created_at}}, School Last Updated: {{s.school.updated_at}}</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-deck">
+      <p ng-if="schools.length>0">
+        Public Schools
+      </p>
       <div class="card"  ng-repeat="s in schools">
         <img class="card-img-top" src="/images/user.png" alt="Card image cap" width="96px">
         <div class="card-block">
           <a ui-sref="accounts.admin.schools.edit({schoolId: s.id})" class="btn btn-sm btn-primary pull-right"><i class="fa fa-eye"></i></a>
-          <h4 class="card-title">{{s.name}} ( {{s.abbrev}})</h4>
+          <h4 class="card-title">{{s.name}} ({{s.abbrev}})</h4>
           <p class="card-text">{{s.description}}</p>
-          <p class="card-text"><small class="text-muted">{{s.updated_at}}</small></p>
+          <p class="card-text"><small class="text-muted">School Last Updated: {{s.school.updated_at}}</small></p>
         </div>
       </div>
     </div>

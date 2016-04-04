@@ -8,7 +8,9 @@
 
 namespace Learner\Controllers\API\Admin;
 
+use Learner\Models\Membership;
 use Learner\Models\Role;
+use Learner\Models\Subscription;
 use Learner\Validation\SchoolValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -23,6 +25,13 @@ class SchoolsController extends BaseController
     }
     public function me(Request $request, Response $response, $args)
     {
+
+        return $response->withJson(Membership::with('school')->where('user_id', $this->auth->user()->id)->get());
+    }
+
+    public function mine(Request $request, Response $response, $args)
+    {
+
         return $response->withJson(School::where('creator_id', $this->auth->user()->id)->get());
     }
 
@@ -145,10 +154,7 @@ class SchoolsController extends BaseController
     {
         $this->jsonRequest->setRequest($request);
         $data = $this->jsonRequest->getRequestParams();
-        $identifier   = isset($data['name'])?$data['name']:null;
-        $abbrev   = isset($data['abbrev'])?$data['abbrev']:null;
-        $private   = isset($data['private'])?$data['private']:null;
-        $description   = isset($data['description'])?$data['description']:null;
+
         if(count($data)<=0)
         {
             $data['code']=400;
@@ -157,6 +163,10 @@ class SchoolsController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }else{
+            $identifier   = isset($data['name'])?$data['name']:null;
+            $abbrev   = isset($data['abbrev'])?$data['abbrev']:null;
+            $private   = isset($data['private'])?$data['private']:null;
+            $description   = isset($data['description'])?$data['description']:null;
             $v = new SchoolValidator(new School());
             $v->validate([
                 'name'    => [$identifier, 'required|uniqueName|min(8)'],
@@ -202,6 +212,13 @@ class SchoolsController extends BaseController
                         $this->auth->user()->roles()->sync([$admin->id]);
                         $isAdmin= true;
                     }
+                    $subscription = new Subscription();
+                    $subscription->user_id = $this->auth->user()->id;
+                    $subscription->school_id = $school->id;
+                    $subscription->type = 'creator';
+                    $subscription->active = 1;
+                    $subscription->added_by= $this->auth->user()->id;
+                    $subscription->save();
                     $data['isAdmin'] = $isAdmin;
                     $response = $this->jsonRender->render($response, 200, $data);
                     return $response;

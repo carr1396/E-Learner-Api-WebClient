@@ -10,7 +10,7 @@ namespace Learner\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Subscription extends Eloquent
+class Membership extends Eloquent
 {
     protected $table ="memberships";
     protected $fillable =['user_id', 'student_id', 'staff_id', 'lecturer_id','type', 'active', 'school_id', 'added_by', 'temporary_password'];

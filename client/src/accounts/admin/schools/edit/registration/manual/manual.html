@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- <div class="panel panel-primary">
+      <div class="panel-heading">
+
+      </div>
+    </div> -->
+    <div class="alert alert-info" role="alert">
+      <p class="text-muted">
+        Manual Registration / Update Note That You Can Do A Batch Update Or Registration Of Students/Lecturers/Courses Via <a ui-sref="accounts.admin.schools.edit.api">API</a>.
+      </p>
+    </div>
+    <ul class="nav nav-tabs">
+      <li class="nav-item" ui-sref-active="active">
+        <a ui-sref="accounts.admin.schools.edit.registration.manual.registration" class="nav-link"  ui-sref-active="active">Register</a>
+      </li>
+      <li class="nav-item" ui-sref-active="active">
+        <a ui-sref="accounts.admin.schools.edit.registration.manual.update" class="nav-link" ui-sref-active="active">Update</a>
+      </li>
+    </ul>
+    <ui-view name= "schoolRegistrationManual"></ui-view>
+  </div>
+</div>

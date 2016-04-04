@@ -25,11 +25,20 @@
                                    }
                                  }
                                })
-              .state('accounts.schools.index', {
-                url : '',
+              .state(
+                  'accounts.schools.index',
+                  {
+                    url : '',
+                    views : {
+                      "schools-view" :
+                          {templateUrl : "app/accounts/schools/index.html"}
+                    }
+                  })
+              .state('accounts.schools.show', {
+                url : '/:schoolId/show',
                 views : {
                   "schools-view" :
-                      {templateUrl : "app/accounts/schools/index.html"}
+                      {templateUrl : "app/accounts/schools/show.html"}
                 }
               });
         }
@@ -42,10 +51,10 @@
         function($scope, Authentication, School, $state) {
           $scope.getCurrentUser = Authentication.getCurrentUser;
           $scope.schools = School.available({id : 'public'});
-          $scope.subscriptions = School.subscriptions({id : 'me'});
+          $scope.memberships = School.memberships({id : 'me'});
           $scope.refreshSchools = function refreshSchools() {
             $scope.schools = School.available({id : 'public'});
-            $scope.subscriptions = School.subscriptions({id : 'me'});
+            $scope.memberships = School.memberships({id : 'me'});
           };
           if ($state.params.schoolId) {
             $scope.school = School.get({id : $state.params.schoolId});

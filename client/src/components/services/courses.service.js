@@ -1,8 +1,8 @@
 (function(){
   'use strict';
   angular.module('learnerApp')
-  .factory('School', ['$resource','APIBASEURL', 'Helpers', function($resource, APIBASEURL, Helpers) {
-    var School = $resource( APIBASEURL+'/schools/:id/:controller', {
+  .factory('Course', ['$resource','APIBASEURL', 'Helpers', function($resource, APIBASEURL, Helpers) {
+    var Course = $resource( APIBASEURL+'/courses/:id/:controller', {
       id: '@id'
     }, {
       update: {
@@ -20,7 +20,7 @@
         method: 'GET',
         isArray: true,
         params: {
-          id: 'mine'
+          id: 'me'
         }
       },
       available: {
@@ -30,7 +30,7 @@
           id: 'public'
         }
       },
-      memberships: {
+      subscriptions: {
         method: 'GET',
         isArray: true,
         params: {
@@ -38,6 +38,6 @@
         }
       }
     });
-    return School;
+    return Course;
   }]);
 })();

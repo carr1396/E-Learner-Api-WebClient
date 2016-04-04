@@ -50,9 +50,13 @@ $app->group('/api/v1', function () {
     $this->get('/schools', 'Learner\Controllers\API\Admin\SchoolsController:index')->setName('api_schools_index');
     $this->get('/schools/{id:[0-9]+}', 'Learner\Controllers\API\Admin\SchoolsController:show')->setName('api_schools_show');
     $this->get('/schools/me', 'Learner\Controllers\API\Admin\SchoolsController:me')->setName('api_schools_me');
+    $this->get('/schools/mine', 'Learner\Controllers\API\Admin\SchoolsController:mine')->setName('api_schools_mine');
     $this->get('/schools/public', 'Learner\Controllers\API\Admin\SchoolsController:publicSchools')->setName('api_schools_public');
     $this->put('/schools/{id:[0-9]+}', 'Learner\Controllers\API\Admin\SchoolsController:update')->setName('api_schools_update');
     $this->delete('/schools/{id:[0-9]+}', 'Learner\Controllers\API\Admin\SchoolsController:destroy')->setName('api_schools_delete');
+
+    $this->post('/memberships', 'Learner\Controllers\API\Admin\MembershipsController:register')->setName('api_subscriptions_store');
+    $this->post('/memberships/school/{id:[0-9]+}', 'Learner\Controllers\API\Admin\MembershipsController:register')->setName('api_subscriptions_store');
 
 });
 $app->get('/{anything:.*}', 'Learner\Controllers\GuestController:anything')->setName('guest_anything');

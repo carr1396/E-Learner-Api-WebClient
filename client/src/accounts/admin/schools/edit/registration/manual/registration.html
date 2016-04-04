@@ -1,0 +1,74 @@
+<form name="manRegisterForm" ng-submit="manuallyRegister(manRegisterForm)">
+  <fieldset class="col-xs-8">
+    <select id="type" name="type" ng-change="currentRegistrationTypeChange()" class="form-control select" ng-model="type">
+      <option value="student" ng-model="type">Student</option>
+      <option value="student_lecturer" ng-model="type">Student Lecturer</option>
+      <option value="lecturer" ng-model="type">Lecturer</option>
+      <option value="admin_student_lecturer" ng-model="type">Admin Student Lecturer</option>
+      <option value="admin_lecturer" ng-model="type">Admin Lecturer</option>
+      <option value="admin" ng-model="type">Administrator</option>
+
+      <option value="course" ng-model="type">Course</option>
+    </select>
+  </fieldset>
+  <fieldset class="col-xs-4">
+    <div class="checkbox-inline">
+      <label for="active"><input type="checkbox" name="active" id="active" ng-model="registrant.active" ng-checked="registrant.active==1"> Is Active</label>
+    </div>
+  </fieldset>
+  <fieldset class="col-xs-12" ng-if="type!=='course'">
+    <p class="help-block text-muted" ng-if="type==='student'">
+      Register Student
+    </p>
+    <p class="help-block text-muted" ng-if="type==='student_lecturer'||type==='lecturer'||type==='admin'||type==='admin_student_lecturer'">
+      Register Lecturer, Studet-Lecturer, Administrators or Administrator-Student-Lecturer
+    </p>
+    <div class='form-group'>
+      <label for="first_name">First(Given) Name: </label>
+      <input type="text"  id="first_name", name="first_name"ng-model="registrant.first_name"  class='form-control'  autofocus required="">
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.first_name.$valid">
+        <p ng-if="manRegisterForm.first_name.$error.required">First Name (Given Name) Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group'>
+      <label for="last_name">Last(Sur) Name</label>
+      <input type="text"  id="last_name", name="last_name"ng-model="registrant.last_name"  class='form-control' required="">
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.last_name.$valid">
+        <p ng-if="manRegisterForm.last_name.$error.required">Last Name (SurName) Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group'>
+      <label for="other_names">Other Names</label>
+      <input type="text"  id="other_names", name="other_names"ng-model="registrant.other_names"  class='form-control'>
+    </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(type, 'student')">
+      <label for="student_id">Student ID</label>
+      <input type="text"  id="student_id", name="student_id"ng-model="registrant.student_id"  class='form-control' required="">
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.student_id.$valid">
+        <p ng-if="manRegisterForm.student_id.$error.required">Student ID Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(type, 'lecturer')">
+      <label for="lecturer_id">Lecturer ID</label>
+      <input type="text"  id="lecturer_id", name="lecturer_id"ng-model="registrant.lecturer_id"  class='form-control' required="">
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.lecturer_id.$valid">
+        <p ng-if="manRegisterForm.lecturer_id.$error.required">Lecturer ID Field Is Required.</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email" >Email address</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required ng-model="registrant.email" >
+      <p class="help-block text-danger" ng-if="manRegisterForm.email.$touched && manRegisterForm.email.$error.email">
+        Wrong Email Format Please Enter A Valid Email
+      </p>
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.email.$valid">
+        <p ng-if="manRegisterForm.email.$error.required">Email Field Is Required.</p>
+        <p ng-if="manRegisterForm.email.$error.email">Wrong Email Format Please Enter A Valid Email.</p>
+      </div>
+    </div>
+    <div class='form-group'>
+      <input type="submit"   name="create" class="btn btn-success" value="Submit Registration">
+      <button name="reset" type="reset" class="btn btn-danger" ng-click="resetRegistrantForm()">Reset Form</button>
+    </div>
+  </fieldset>
+</form>
