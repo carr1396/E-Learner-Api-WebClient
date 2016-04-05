@@ -15,6 +15,7 @@
                  Membership) {
           $scope.schoolID = $stateParams.schoolId;
           $scope.type = "student";
+
           $scope.registrant = {active : 1};
           $scope.currentRegistrationTypeChange =
               function currentRegistrationTypeChange() {
@@ -34,17 +35,18 @@
               if ($scope.type !== 'course') {
                 $scope.membership = new Membership($scope.registrant);
                 $scope.membership.$save().then(function(res) {
-                  if (res.error || res.success === false) {
+                  if (res.error || res.success === false || !res.id) {
                     Helpers.displayErrors($scope, res, Toastr);
                   } else {
                     Toastr.success(
                         'Success!!',
                         'You Have Successfully Subscribed A New User to Your School');
+                    $state.go(
+                        'accounts.admin.schools.edit.registration.manual.update.index');
                   }
-                  $state.go('accounts.schools.show',
-                            {schoolId : $scope.schoolID});
                 });
               } else {
+                console.log('COurse');
               }
             } else {
               $scope.errors = [];

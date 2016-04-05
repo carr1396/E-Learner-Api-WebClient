@@ -1,0 +1,26 @@
+<h4 class="display-4">Students</h4>
+<div class="col-md-4 col-sm-6" ng-repeat="m in members" ng-if="typeContains(m.type, 'student')">
+  <div class="card">
+    <div class="btn-group pull-right" role="group" aria-label="Button group">
+      <a type="button" ui-sref="accounts.users.show({userId: m.user.id})" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> Profile</a>
+      <a type="button" ui-sref="accounts.admin.schools.edit.registration.manual.update.membersEdit({memberId: m.id})" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Edit</a>
+      <button type="button" class="btn btn-xs btn-danger" ng-click="deleteMembership(m.id, $index)"><i class="fa fa-remove"></i> Delete</button>
+      <button type="button" class="btn btn-xs" ng-class="{'btn-danger': m.active===1 || m.active===true , 'btn-success': m.active!==1 && ma.active!==true}"
+      ng-click="deactivateActivateMembership(m.id, $index)">
+        <i class="fa" ng-class="{'fa-remove': m.active===1 || m.active=== true, 'fa-check': m.active!==1 && m.active!==true}"></i>
+        {{m.active===1 || m.active=== true?'Deactivate': 'Activate'}}
+      </button>
+    </div>
+    <a href="#"><img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="school-profile-user-img"></a>
+    <ul class="list-unstyled">
+      <li>{{m.user.full_name}}</li>
+      <li>ID {{m.student_id}}</li>
+      <li>{{m.user.username}}</li>
+      <li>{{m.user.email}}</li>
+      <li>Temporary Password: <span class="text-muted">{{m.temporary_password}}</span> <span class="text-danger" title="Insecure And Should Be Changed As Soon As Possible">(Unsafe)</span></li>
+    </ul>
+    <div class="clearfix">...</div>
+    <hr>
+    <p  class="text-muted">Since {{m.created_at}}</p>
+  </div>
+</div>

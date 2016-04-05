@@ -1,0 +1,55 @@
+<ul class="nav nav-pills pull-right">
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.admin.schools.edit.registration.manual.update.index" class="nav-link" ui-sref-active="active">Students</a>
+  </li>
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.admin.schools.edit.registration.manual.update.lecturers" class="nav-link" ui-sref-active="active">Lecturers</a>
+  </li>
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.admin.schools.edit.registration.manual.update.courses" class="nav-link" ui-sref-active="active">Courses</a>
+  </li>
+  <li class="nav-item" ui-sref-active="active">
+    <a ui-sref="accounts.admin.schools.edit.registration.manual.update.administrators" class="nav-link" ui-sref-active="active">Administrators</a>
+  </li>
+</ul>
+<div class="clearfix"></div>
+<div class="col-xs-12">
+  <h4>Add Already Existing User As Member</h4>
+  <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.email.$valid && errors.length>0">
+    <p ng-if="manRegisterForm.email.$error.required">Email Field Is Required.</p>
+    <p ng-if="manRegisterForm.email.$error.email">Wrong Email Format Please Enter A Valid Email.</p>
+    <p ng-if="manRegisterForm.lecturer_id.$error.required">Lecturer ID Field Is Required.</p>
+    <p ng-if="manRegisterForm.student_id.$error.required">Student ID Field Is Required.</p>
+    <p ng-if="manRegisterForm.staff_id.$error.required">Staff ID Field Is Required.</p>
+  </div>
+  <form class="form-inline" name="manRegisterForm" ng-submit="manRegisterAlreadyExistingUser(manRegisterForm)">
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select name="type" class="form-control select" ng-model="registrant.type" ng-options="t.value as t.text for t in types">
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="email" >Email address(Existing User)</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required ng-model="registrant.email" >
+      <p class="help-block text-danger" ng-if="manRegisterForm.email.$touched && manRegisterForm.email.$error.email">
+        Wrong Email Format Please Enter A Valid Email
+      </p>
+    </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(registrant.type, 'student')">
+      <label for="student_id">Student ID</label>
+      <input type="text"  id="student_id", name="student_id"ng-model="registrant.student_id"  class='form-control' required="">
+    </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(registrant.type, 'lecturer')">
+      <label for="lecturer_id">Lecturer ID</label>
+      <input type="text"  id="lecturer_id", name="lecturer_id"ng-model="registrant.lecturer_id"  class='form-control' required="">
+    </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(registrant.type, 'admin')">
+      <label for="staff_id">Staff ID (For Administrators Who Are Not Lecturers)</label>
+      <input type="text"  id="staff_id", name="staff_id"ng-model="registrant.staff_id"  class='form-control'>
+    </div>
+    <button type="submit" class="btn btn-primary">Send invitation</button>
+  </form>
+  <hr>
+  <h4>Update Existing Membership</h4>
+  <ui-view name="schoolManualUpdateView"></ui-view>
+</div>

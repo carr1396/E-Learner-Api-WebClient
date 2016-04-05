@@ -1,0 +1,57 @@
+<p class="text-danger" >
+  Membership Edit
+</p>
+<form name="manUpdateForm" ng-submit="manuallyUpdateMembership(manUpdateForm)" ng-if="member">
+  <fieldset class="col-xs-8" ng-if="member.type!=='creator'">
+    <select id="type" name="type" ng-change="currentRegistrationTypeChange(member.type)"
+    class="form-control select" ng-model="member.type" ng-options="t.value as t.text for t in types">
+    </select>
+  </fieldset>
+  <p class="text-danger" ng-if="member.type==='creator'">
+    Creator Membership
+  </p>
+  <fieldset class="col-xs-4">
+    <div class="checkbox-inline">
+      <label for="active"><input type="checkbox" name="active" id="active" ng-model="member.active" ng-checked="member.active===1"> Is Active</label>
+    </div>
+  </fieldset>
+  <fieldset class="col-xs-12" ng-if="member">
+    <p class="help-block text-muted" ng-if="member.type==='student'">
+      Register Student
+    </p>
+    <p class="help-block text-muted" ng-if="member.type==='student_lecturer'||type==='lecturer'||type==='admin'||type==='admin_student_lecturer'">
+      Register Lecturer, Studet-Lecturer, Administrators or Administrator-Student-Lecturer
+    </p>
+    <div class='form-group' ng-if="member.type && showLecturerStudentIDField(member.type, 'student')">
+      <label for="student_id">Student ID
+        <span class="text-danger">
+        Only For Students</span></label>
+      <input type="text"  id="student_id", name="student_id"ng-model="member.student_id"  class='form-control' required="">
+      <div class="alert alert-danger" ng-if="manUpdateForm.$submitted && !manUpdateForm.student_id.$valid">
+        <p ng-if="manUpdateForm.student_id.$error.required">Student ID Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group' ng-if="member.type && showLecturerStudentIDField(member.type, 'lecturer')">
+      <label for="lecturer_id">Lecturer ID <span class="text-danger" >
+        Only For Lecturers</span></label>
+      <input type="text"  id="lecturer_id", name="lecturer_id"ng-model="member.lecturer_id"  class='form-control' required="">
+      <div class="alert alert-danger" ng-if="manUpdateForm.$submitted && !manUpdateForm.lecturer_id.$valid">
+        <p ng-if="manUpdateForm.lecturer_id.$error.required">Lecturer ID Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group' ng-if="member.type && showLecturerStudentIDField(member.type, 'admin')">
+      <p class="help-block text-muted text-sm-right">
+        For Administrators Who Are Not Lecturers
+      </p>
+      <label for="staff_id">Staff ID</label>
+      <input type="text"  id="staff_id", name="staff_id"ng-model="member.staff_id"  class='form-control'>
+      <div class="alert alert-danger" ng-if="manUpdateForm.$submitted && !manUpdateForm.staff_id.$valid">
+        <p ng-if="manUpdateForm.staff_id.$error.required">Staff ID Field Is Required.</p>
+      </div>
+    </div>
+    <div class='form-group'>
+      <input type="submit"   name="create" class="btn btn-success" value="Submit Membership Update">
+      <button name="reset" type="reset" class="btn btn-danger" ng-click="resetUpdateForm()">Reset Form</button>
+    </div>
+  </fieldset>
+</form>

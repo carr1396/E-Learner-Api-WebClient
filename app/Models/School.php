@@ -22,7 +22,8 @@ class School extends Eloquent
 
     public function creator()
     {
-        return $this->hasOne('Learner\Models\User');
+//        return $this->hasOne('Learner\Models\User');
+        return $this->belongsTo('Learner\Models\User');
     }
 
     public function setPrivateAttribute($value){

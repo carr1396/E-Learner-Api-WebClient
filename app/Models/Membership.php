@@ -13,9 +13,14 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class Membership extends Eloquent
 {
     protected $table ="memberships";
-    protected $fillable =['user_id', 'student_id', 'staff_id', 'lecturer_id','type', 'active', 'school_id', 'added_by', 'temporary_password'];
+    protected $fillable =['user_id', 'student_id', 'staff_id', 'lecturer_id','type', 'active', 'school_id', 'added_id', 'temporary_password'];
 
     public function user()
+    {
+        return $this->belongsTo('Learner\Models\User');
+    }
+
+    public function added()
     {
         return $this->belongsTo('Learner\Models\User');
     }

@@ -32,6 +32,23 @@
                       "accounts" : {templateUrl : "app/accounts/index.html"}
                     }
                   })
+              .state('accounts.users',
+                     {
+                       url : 'users',
+                       abstract : true,
+                       views : {
+                         "accounts" :
+                             {templateUrl : "app/accounts/users/users.html"}
+                       }
+                     })
+              .state('accounts.users.show',
+                     {
+                       url : '/:userId/show',
+                       views : {
+                         "accountsUsers" :
+                             {templateUrl : "app/accounts/users/show.html"}
+                       }
+                     })
               .state('accounts.settings',
                      {
                        url : 'me/settings',

@@ -28,6 +28,19 @@ class SchoolsController extends BaseController
 
         return $response->withJson(Membership::with('school')->where('user_id', $this->auth->user()->id)->get());
     }
+    public function members(Request $request, Response $response, $args)
+    {
+        if(!isset($args['id']))
+        {
+            $data=array();
+            $data['code']=400;
+            $data['success']=false;
+            $data['error'] = 'ID Not Specified';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        return $response->withJson(Membership::with('user')->where('school_id', $args['id'])->get());
+    }
 
     public function mine(Request $request, Response $response, $args)
     {
@@ -51,7 +64,7 @@ class SchoolsController extends BaseController
             $response = $this->jsonRender->render($response, 400, $data);
             return $response;
         }
-        return $response->withJson(School::where('id', $args['id'])->first());
+        return $response->withJson(School::with('creator')->where('id', $args['id'])->first());
     }
     public function destroy(Request $request, Response $response, $args)
     {
@@ -209,7 +222,12 @@ class SchoolsController extends BaseController
                     $isAdmin = false;
                     if(!is_null($admin))
                     {
-                        $this->auth->user()->roles()->sync([$admin->id]);
+                        $rs = $this->auth->user()->roles()->get();
+                        $roleIds = array();
+                        foreach ($rs as $r){
+                            array_push($roleIds, $r->id);
+                        }
+                        $this->auth->user()->roles()->sync([$admin->id]+$roleIds);
                         $isAdmin= true;
                     }
                     $subscription = new Subscription();

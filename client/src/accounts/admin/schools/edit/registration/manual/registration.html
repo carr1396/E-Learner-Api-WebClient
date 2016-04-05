@@ -55,6 +55,16 @@
         <p ng-if="manRegisterForm.lecturer_id.$error.required">Lecturer ID Field Is Required.</p>
       </div>
     </div>
+    <div class='form-group' ng-if="showLecturerStudentIDField(type, 'admin')">
+      <p class="help-block text-muted text-sm-right">
+        For Administrators Who Are Not Lecturers
+      </p>
+      <label for="staff_id">Staff ID</label>
+      <input type="text"  id="staff_id", name="staff_id"ng-model="registrant.staff_id"  class='form-control'>
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.staff_id.$valid">
+        <p ng-if="manRegisterForm.staff_id.$error.required">Staff ID Field Is Required.</p>
+      </div>
+    </div>
     <div class="form-group">
       <label for="email" >Email address</label>
       <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required ng-model="registrant.email" >

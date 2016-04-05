@@ -140,15 +140,90 @@
                       }
                     }
                   })
-              .state('accounts.admin.schools.edit.registration.manual.update', {
-                url : '/update',
-                views : {
-                  "schoolRegistrationManual" : {
-                    templateUrl :
-                        "app/accounts/admin/schools/edit/registration/manual/update.html"
-                  }
-                }
-              });
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update',
+                  {
+                    url : '/update',
+                    abstract : true,
+                    views : {
+                      "schoolRegistrationManual" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/update.html",
+                        controller :
+                            'SchoolAdminEditRegistrationManualUpdateCtrl'
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.index',
+                  {
+                    url : '',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/index.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.lecturers',
+                  {
+                    url : '/lecturers',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/lecturers.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.courses',
+                  {
+                    url : '/courses',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/courses.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.administrators',
+                  {
+                    url : '/administrators',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/administrators.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.membersEdit',
+                  {
+                    url : '/members/:memberId/edit',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/member.html",
+                        controller :
+                            'SchoolAdminEditRegistrationManualUpdateMemberCtrl'
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.manual.update.courseEdit',
+                  {
+                    url : '/courses/:courseId/edit',
+                    views : {
+                      "schoolManualUpdateView" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/manual/update/courseEdit.html",
+                        controller :
+                            'SchoolAdminEditRegistrationManualUpdateCourseCtrl'
+                      }
+                    }
+                  });
         }
       ])
       .controller('SchoolAdminCtrl', [

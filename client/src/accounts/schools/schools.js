@@ -25,20 +25,23 @@
                                    }
                                  }
                                })
-              .state(
-                  'accounts.schools.index',
-                  {
-                    url : '',
-                    views : {
-                      "schools-view" :
-                          {templateUrl : "app/accounts/schools/index.html"}
-                    }
-                  })
+              .state('accounts.schools.index',
+                     {
+                       url : '',
+                       views : {
+                         "schools-view" : {
+                           templateUrl : "app/accounts/schools/index.html",
+                           controller : 'SchoolAccountCtrl'
+                         }
+                       }
+                     })
               .state('accounts.schools.show', {
                 url : '/:schoolId/show',
                 views : {
-                  "schools-view" :
-                      {templateUrl : "app/accounts/schools/show.html"}
+                  "schools-view" : {
+                    templateUrl : "app/accounts/schools/show.html",
+                    controller : 'SchoolAccountCtrl'
+                  }
                 }
               });
         }
@@ -50,14 +53,17 @@
         '$state',
         function($scope, Authentication, School, $state) {
           $scope.getCurrentUser = Authentication.getCurrentUser;
-          $scope.schools = School.available({id : 'public'});
-          $scope.memberships = School.memberships({id : 'me'});
-          $scope.refreshSchools = function refreshSchools() {
+
+          if ($state.params.schoolId) {
+            $scope.school =
+                $scope.school || School.get({id : $state.params.schoolId});
+          } else {
             $scope.schools = School.available({id : 'public'});
             $scope.memberships = School.memberships({id : 'me'});
-          };
-          if ($state.params.schoolId) {
-            $scope.school = School.get({id : $state.params.schoolId});
+            $scope.refreshSchools = function refreshSchools() {
+              $scope.schools = School.available({id : 'public'});
+              $scope.memberships = School.memberships({id : 'me'});
+            };
           }
         }
       ]);
