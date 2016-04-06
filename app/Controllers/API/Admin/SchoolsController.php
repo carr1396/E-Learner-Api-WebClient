@@ -8,6 +8,7 @@
 
 namespace Learner\Controllers\API\Admin;
 
+use Learner\Models\Course;
 use Learner\Models\Membership;
 use Learner\Models\Role;
 use Learner\Models\Subscription;
@@ -40,6 +41,34 @@ class SchoolsController extends BaseController
             return $response;
         }
         return $response->withJson(Membership::with('user')->where('school_id', $args['id'])->get());
+    }
+
+    public function courses(Request $request, Response $response, $args)
+    {
+        if(!isset($args['id']))
+        {
+            $data=array();
+            $data['code']=400;
+            $data['success']=false;
+            $data['error'] = 'ID Not Specified';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        return $response->withJson(Course::with('added')->where('school_id', $args['id'])->get());
+    }
+
+    public function toggleActivate(Request $request, Response $response, $args)
+    {
+        if(!isset($args['id']))
+        {
+            $data=array();
+            $data['code']=400;
+            $data['success']=false;
+            $data['error'] = 'ID Not Specified';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        return $response->withJson(Course::with('added')->where('school_id', $args['id'])->get());
     }
 
     public function mine(Request $request, Response $response, $args)

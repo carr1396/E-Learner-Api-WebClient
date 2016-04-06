@@ -46,7 +46,7 @@
                 error += '<li> ' + err + ' </li>';
               });
               error += '</ul>';
-              logger.error(error);
+              logger.error(error, 'Error!!');
             },
             convertStringToSentenceCase : function convertStringToSentenceCase(
                 str) {

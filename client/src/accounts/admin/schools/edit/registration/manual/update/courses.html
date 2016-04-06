@@ -1,1 +1,24 @@
-<h5>Students</h5>
+<h4 class="display-4">Courses</h4>
+<div class="col-md-4 col-sm-6" ng-repeat="m in courses" >
+  <div class="card">
+    <div class="btn-group pull-right" role="group" aria-label="Button group">
+      <a type="button" ui-sref="accounts.courses.show({courseId: m.id})" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> Profile</a>
+      <a type="button" ui-sref="accounts.admin.schools.edit.registration.manual.update.courseEdit({courseId: m.id})" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Edit</a>
+      <button type="button" class="btn btn-xs btn-danger" ng-click="deleteCourse(m.id, $index)"><i class="fa fa-remove"></i> Delete</button>
+      <button type="button" class="btn btn-xs" ng-class="{'btn-danger': m.active===1 || m.active===true , 'btn-success': m.active!==1 && ma.active!==true}"
+      ng-click="deactivateActivateCourse(m.id, $index)">
+        <i class="fa" ng-class="{'fa-remove': m.active===1 || m.active=== true, 'fa-check': m.active!==1 && m.active!==true}"></i>
+        {{m.active===1 || m.active=== true?'Deactivate': 'Activate'}}
+      </button>
+    </div>
+    <a href="#"><img src="/images/user.png" alt="{{getCurrentUser().username}}_profile_image" class="school-profile-user-img"></a>
+    <ul class="list-unstyled">
+      <li>{{m.name}} ({{m.code}})</li>
+      <li>Abbreviation: {{m.abbrev}}</li>
+      <li>Added By <a ui-sref="accounts.users.show({userId: m.added_id})" > {{m.added.username}}</a></li>
+    </ul>
+    <div class="clearfix"></div>
+    <hr>
+    <p  class="text-muted">Since {{m.created_at}}</p>
+  </div>
+</div>

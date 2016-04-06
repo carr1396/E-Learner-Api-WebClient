@@ -43,6 +43,13 @@
         params: {
           controller: 'members'
         }
+      },
+      courses: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          controller: 'courses'
+        }
       }
     });
     return School;

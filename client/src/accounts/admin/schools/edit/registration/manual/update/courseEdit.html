@@ -1,0 +1,60 @@
+<p class="text-danger" >
+  Course Edit
+</p>
+<form name="manUpdateForm" ng-submit="manuallyUpdateCourse(manUpdateForm)" ng-if="course">
+  <fieldset class="col-xs-12" >
+    <p>
+      A course is the single module or subject
+    </p>
+    <div class="form-group">
+      <label for="name">Course Name</label>
+      <input type="text" name="name"  class="form-control" ng-model="course.name" required="This Field is Required" ng-minlength="8">
+      <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.name.$valid">
+        <p ng-if="manRegisterForm.name.$error.required">Name Field Is Required.</p>
+        <p ng-if="manRegisterForm.name.$error.minlength">Name Should Be Atleast 8 Characters</p>
+        <p ng-if="manRegisterForm.name.$error.pattern">Wrong School Name Format.</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="categories">Chose Category(ies)</label>
+      <isteven-multi-select input-model="categories" name="categories" button-label="name" orientation="horizontal"
+      required output-model="course.categories" dropdown-label="Select Categories" item-label="id name"
+      tick-property="ticked">
+    </isteven-multi-select>
+  </div>
+  <div class="form-group">
+    <label for="code">Course Code</label>
+    <input type="text" name="code"  class="form-control" ng-model="course.code" required="This Field is Required" ng-minlength="3" ng-maxlength="8">
+    <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.code.$valid">
+      <p ng-if="manRegisterForm.code.$error.required">Course Code Field Is Required.</p>
+      <p ng-if="manRegisterForm.code.$error.minlength">Course Code Should Be Atleast 3 Characters</p>
+      <p ng-if="manRegisterForm.code.$error.maxlength">Course Code Should Be Not Be More Than 8 Characters</p>
+      <p ng-if="manRegisterForm.code.$error.pattern">Wrong School Course Code.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="abbrev">Abbreviation</label>
+    <input type="text" name="abbrev"  class="form-control" ng-model="course.abbrev" required="This Field is Required" ng-minlength="3" ng-maxlength="8">
+    <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.abbrev.$valid">
+      <p ng-if="manRegisterForm.abbrev.$error.required">Abbreviation Field Is Required.</p>
+      <p ng-if="manRegisterForm.abbrev.$error.minlength">Abbreviation Should Be Atleast 3 Characters</p>
+      <p ng-if="manRegisterForm.abbrev.$error.maxlength">Abbreviation Should Be Not Be More Than 8 Characters</p>
+      <p ng-if="manRegisterForm.abbrev.$error.pattern">Wrong School Abbreviation Format.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea rows="8" cols="40" name="description"  class="form-control" ng-model="course.description" ng-minlength="40" required="Descripition Is Required"></textarea>
+    <div class="alert alert-danger" ng-if="manRegisterForm.$submitted && !manRegisterForm.description.$valid">
+      <p ng-if="manRegisterForm.description.$error.required">Descripition Is Required.</p>
+      <p ng-if="manRegisterForm.description.$error.minlength">Description Should Be Atleast 40 Characters</p>
+    </div>
+  </div>
+</fieldset>
+<fieldset class="col-xs-12">
+  <div class='form-group'>
+    <input type="submit"   name="create" class="btn btn-success" value="Submit Registration">
+    <button name="reset" type="button" class="btn btn-danger" ng-click="resetRegistrantForm()">Reset Form</button>
+  </div>
+</fieldset>
+</form>
