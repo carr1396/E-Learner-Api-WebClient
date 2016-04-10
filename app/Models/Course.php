@@ -21,6 +21,14 @@ class Course extends Eloquent
         return $this->belongsTo('Learner\Models\User');
     }
 
+    public function students(){
+        return $this->belongsToMany('Learner\Models\User', 'course_student');
+    }
+
+    public function lecturers(){
+        return $this->belongsToMany('Learner\Models\User', 'course_lecturer');
+    }
+
     public function categories()
     {
         return $this->belongsToMany('Learner\Models\Category');

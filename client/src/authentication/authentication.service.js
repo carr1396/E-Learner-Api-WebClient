@@ -181,11 +181,11 @@
       return Authentication;
     }
   ]).factory('leanerHTTPInterceptor', ['$log','localStorageService', '$rootScope',
-  'Toastr', '$location', function($log, localStorageService, $rootScope, Toastr,  $location) {
+  'Toastr', '$location','Helpers','$window', function($log, localStorageService, $rootScope, Toastr,  $location, Helpers, $window) {
     var Interceptor = {
       request : function(config) {
         var access_token = localStorageService.get('_token') ? localStorageService.get('_token') : null;
-        if (access_token) {
+        if (access_token && !Helpers.stringAContainsB(config.url, 'http://')) {
             config.headers.Authorization = 'Bearer '+access_token;
         }
         return config;

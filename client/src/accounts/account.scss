@@ -8,7 +8,11 @@
 .table-responsive{
   width: 98%;
 }
-
+.form-control{
+  .form-control-success{
+    border-color: #1abc9c;
+  }
+}
 .card{
   background: #fff;
   margin: 4px;

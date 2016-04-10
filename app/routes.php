@@ -55,6 +55,7 @@ $app->group('/api/v1', function () {
     $this->get('/schools/{id:[0-9]+}/courses', 'Learner\Controllers\API\Admin\SchoolsController:courses')->setName('api_schools_courses');
     $this->get('/schools/public', 'Learner\Controllers\API\Admin\SchoolsController:publicSchools')->setName('api_schools_public');
     $this->put('/schools/{id:[0-9]+}', 'Learner\Controllers\API\Admin\SchoolsController:update')->setName('api_schools_update');
+    $this->put('/schools/{id:[0-9]+}/api_settings', 'Learner\Controllers\API\Admin\SchoolsController:updateAPISettings')->setName('api_schools_updateAPISettings');
     $this->delete('/schools/{id:[0-9]+}', 'Learner\Controllers\API\Admin\SchoolsController:destroy')->setName('api_schools_delete');
 
     $this->post('/memberships', 'Learner\Controllers\API\Admin\MembershipsController:register')->setName('api_memberships_store');
@@ -66,6 +67,8 @@ $app->group('/api/v1', function () {
     $this->post('/courses', 'Learner\Controllers\API\Admin\CoursesController:store')->setName('api_courses_store');
     $this->get('/courses/{id:[0-9]+}', 'Learner\Controllers\API\Admin\CoursesController:show')->setName('api_courses_show');
     $this->put('/courses/{id:[0-9]+}', 'Learner\Controllers\API\Admin\CoursesController:update')->setName('api_courses_update');
+    $this->post('/courses/subscriptions/update', 'Learner\Controllers\API\Admin\CoursesController:subscriptions')->setName('api_courses_subscriptions_update');
+    $this->post('/courses/lecturers/update', 'Learner\Controllers\API\Admin\CoursesController:lecturersAdd')->setName('api_courses_lecturers_update');
 
     $this->get('/categories/list', 'Learner\Controllers\API\Admin\CategoriesController:listAll')->setName('api_categories_list');
 

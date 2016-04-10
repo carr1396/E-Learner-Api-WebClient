@@ -1,0 +1,19 @@
+<div class="alert alert-danger" role="alert" ng-if="!school.api_base_url
+|| !school.admin_verification_url || !school.student_update_url
+||!school.lecturer_update_url  || !school.course_update_url ">
+<strong>Oh snap!</strong> Some Of Your API Settings Are  Missing Update
+<a ui-sref="accounts.admin.schools.edit.api" class="alert-link">Here</a>.
+</div>
+
+
+<div class="jumbotron jumbotron-fluid text-center"  ng-if="school.api_base_url
+&& school.admin_verification_url && school.student_update_url
+&& school.lecturer_update_url  && school.course_update_url">
+<p>
+  <strong>Congratulations!</strong> Looks Like All Your API Settings Checked Out Incase You Want TO Edit Them Go
+  <a ui-sref="accounts.admin.schools.edit.api" class="alert-link">Here</a>.
+</p>
+<p class="text-danger">
+  Sorry Update By API is not Yet Implemented As Of Now Do It Manually
+</p>
+</div>

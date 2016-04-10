@@ -98,10 +98,45 @@
                   'accounts.admin.schools.edit.registration.api',
                   {
                     url : '/api',
+                    abstract : true,
                     views : {
                       "schoolRegistration" : {
                         templateUrl :
-                            "app/accounts/admin/schools/edit/registration/api.html"
+                            "app/accounts/admin/schools/edit/registration/api/api.html",
+                        controller : 'SchoolAdminEditRegistrationAPICtrl'
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.api.index',
+                  {
+                    url : '',
+                    views : {
+                      "schoolRegistrationAPI" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/api/index.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.api.registration',
+                  {
+                    url : '/registration',
+                    views : {
+                      "schoolRegistrationAPI" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/api/registration.html"
+                      }
+                    }
+                  })
+              .state(
+                  'accounts.admin.schools.edit.registration.api.update',
+                  {
+                    url : '/update',
+                    views : {
+                      "schoolRegistrationAPI" : {
+                        templateUrl :
+                            "app/accounts/admin/schools/edit/registration/api/update.html"
                       }
                     }
                   })

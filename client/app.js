@@ -12,6 +12,7 @@
                    'LocalStorageModule',
                    'isteven-multi-select',
                    'angular-multi-check',
+                   'ui.validate',
                    'learnerGuestsModule',
                    'leanerAccountModule'
                  ])
@@ -25,6 +26,7 @@
           localStorageServiceProvider.setPrefix('e_leaner_2015_11000021');
           localStorageServiceProvider.setStorageType('localStorage');
           localStorageServiceProvider.setNotify(true, true);
+          $httpProvider.defaults.useXDomain = true;
           $httpProvider.interceptors.push('leanerHTTPInterceptor');
         }
       ])

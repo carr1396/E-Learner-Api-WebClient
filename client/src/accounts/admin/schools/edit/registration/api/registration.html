@@ -1,0 +1,262 @@
+<div class="alert alert-danger" role="alert" ng-if="!school.api_base_url
+|| !school.admin_verification_url || !school.student_update_url
+||!school.lecturer_update_url  || !school.course_update_url ">
+<strong>Oh snap!</strong> Some Of Your API Settings Are  Missing Update
+<a ui-sref="accounts.admin.schools.edit.api" class="alert-link">Here</a>.
+</div>
+
+<div class="alert alert-success" role="alert" ng-if="school.api_base_url
+&& school.admin_verification_url && school.student_update_url
+&& school.lecturer_update_url  && school.course_update_url">
+<strong>Congratulations!</strong> Looks Like All Your API Settings Checked Out Incase You Want TO Edit Them Go
+<a ui-sref="accounts.admin.schools.edit.api" class="alert-link">Here</a>.
+</div>
+<p class="help-block text-danger">
+  Make Sure That Your API Follows <a ui-sref="guests.index">Guidlines</a>
+</p>
+<div ng-if="school.api_base_url
+&& school.admin_verification_url && school.student_update_url
+&& school.lecturer_update_url  && school.course_update_url">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Verify Base Url Verification
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="baseURLRegistration" ng-submit="submitRegistrationUrl(baseURLRegistration, school.api_base_url)">
+      <div class="form-group">
+        <p class="help-block text-danger">
+          <button type="submit" class="btn btn-sm btn-success">Verify Base Url Verification</button>
+        </p>
+      </div>
+    </form>
+
+    <div class="col-md-12" ng-if="registrant.api_base_url.result">
+      <p class="text-left">
+        <button class="btn btn-xs btn-info" ng-click="collapseAPIBASEURL=!collapseAPIBASEURL" role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+      </p>
+      <p>
+        API base URL
+      </p>
+      <pre uib-collapse="collapseAPIBASEURL">
+        {{registrant.api_base_url.result | json}}
+      </pre>
+    </div>
+  </div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Submit Admin Url Verification
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="adminVerificationURLRegistration" ng-submit="submitRegistrationUrl(adminVerificationURLRegistration, school.admin_verification_url)">
+      <div class="form-group">
+        <p class="help-block text-danger">
+          <button type="submit" class="btn btn-sm btn-success">Submit Admin Url Verification</button>
+        </p>
+      </div>
+    </form>
+
+    <div class="col-md-12" ng-if="registrant.admin_verification_url.result">
+      <p class="text-left">
+        <button class="btn btn-xs btn-info" ng-click="collapseADMINVERIFICATIONURL=!collapseADMINVERIFICATIONURL" role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+      </p>
+      <p>
+        Admin Verification Results
+      </p>
+      <pre uib-collapse="collapseADMINVERIFICATIONURL">
+        {{registrant.admin_verification_url.result | json}}
+      </pre>
+    </div>
+  </div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Run Student(Update) Registration
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="studentUpdateURLRegistration"
+    ng-submit="submitRegistrationUrl(studentUpdateURLRegistration, school.student_update_url)">
+    <div class="form-group">
+      <p class="help-block text-danger">
+        <button type="submit" class="btn btn-sm btn-success"  ng-dblclick="false" ng-disabled="studentUpdateURLRegistration.$submitted && studentCount<registrant.student_update_url.result.length">Run Student(Update) Registration</button>
+      </p>
+    </div>
+  </form>
+  <div class="col-md-12" ng-if="registrant.student_update_url.result">
+    <p>
+      Student Update API Results =>JSON Array ({{registrant.student_update_url.result.length}}) students
+      <span class="label label-info">{{studentCount}} / {{registrant.student_update_url.result.length}} Requests Finished</span>
+      <span class="label label-success">{{studentCountSuccess}} Successful Requests</span>
+      <span class="label label-danger">{{studentCountErrors}} Failed Requests (Try To Enter The Failed Entries Manually...)</span>
+    </p>
+    <p ng-if="studentCountSuccess >0">
+      See School <a href="accounts.schools.show({schoolId: schoolID})">Profile</a>
+    </p>
+    <p class="text-left">
+      <button class="btn btn-xs btn-info" ng-click="collapseStudentUpdateResults=!collapseStudentUpdateResults" role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+    </p>
+    <div class="alert alert-danger" role="alert" ng-if="studentCount === registrant.student_update_url.result.length && studentCountErrors >0" ng-bind-html="sanitizeAppHTML(error)">
+    </div>
+    <pre uib-collapse="collapseStudentUpdateResults">{{registrant.student_update_url.result | json}}</pre>
+  </div>
+</div>
+</div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Run Lecturer(Update) Registration
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="lecturerUpdateURLRegistration"
+    ng-submit="submitRegistrationUrl(lecturerUpdateURLRegistration, school.lecturer_update_url)">
+    <div class="form-group">
+      <p class="help-block text-danger">
+        <button type="submit" class="btn btn-sm btn-success"  ng-dblclick="false"
+        ng-disabled="lecturerUpdateURLRegistration.$submitted && lecturerCount<registrant.lecturer_update_url.result.length">Run Lecturer(Update) Registration</button>
+      </p>
+    </div>
+  </form>
+  <div class="col-md-12" ng-if="registrant.lecturer_update_url.result">
+    <p>
+      Lecturer Update API Results =>JSON Array ({{registrant.lecturer_update_url.result.length}}) Lecturers
+      <span class="label label-info">{{lecturerCount}} / {{registrant.lecturer_update_url.result.length}} Requests Finished</span>
+      <span class="label label-success">{{lecturerCountSuccess}} Successful Requests</span>
+      <span class="label label-danger">{{lecturerCountErrors}} Failed Requests (Try To Enter The Failed Entries Manually...)</span>
+    </p>
+    <p ng-if="lecturerCountSuccess >0">
+      See School <a href="accounts.schools.show({schoolId: schoolID})">Profile</a>
+    </p>
+    <p class="text-left">
+      <button class="btn btn-xs btn-info" ng-click="collapseLecturerUpdateResults=!collapseStudentUpdateResults"
+      role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+    </p>
+    <div class="alert alert-danger" role="alert"
+    ng-if="lecturerCount === registrant.lecturer_update_url.result.length && lecturerCountErrors >0" ng-bind-html="sanitizeAppHTML(error)">
+  </div>
+  <pre uib-collapse="collapseLecturerUpdateResults">{{registrant.lecturer_update_url.result | json}}</pre>
+</div>
+</div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Run Course(Update) Registration
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="courseUpdateURLRegistration"
+    ng-submit="submitRegistrationUrl(courseUpdateURLRegistration, school.course_update_url)">
+    <div class="form-group">
+      <p class="help-block text-danger">
+        <button type="submit" class="btn btn-sm btn-success"  ng-dblclick="false"
+        ng-disabled="courseUpdateURLRegistration.$submitted && courseCount<registrant.course_update_url.result.length">Run Course(Update) Registration</button>
+        <p>
+          Course Update Does Not Support Update/ Registration Of Same Name Courses In The Same School Do This Manually
+        </p>
+      </p>
+    </div>
+  </form>
+  <div class="col-md-12" ng-if="registrant.course_update_url.result">
+    <p>
+      Course Update API Results =>JSON Array ({{registrant.course_update_url.result.length}}) Courses
+      <span class="label label-info">{{courseCount}} / {{registrant.course_update_url.result.length}} Requests Finished</span>
+      <span class="label label-success">{{courseCountSuccess}} Successful Requests</span>
+      <span class="label label-danger">{{courseCountErrors}} Failed Requests (Try To Enter The Failed Entries Manually...)</span>
+    </p>
+    <p ng-if="courseCountSuccess >0">
+      See School <a href="accounts.schools.show({schoolId: schoolID})">Profile</a>
+    </p>
+    <p class="text-left">
+      <button class="btn btn-xs btn-info" ng-click="collapseLecturerUpdateResults=!collapseLecturerUpdateResults"
+      role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+    </p>
+    <div class="alert alert-danger" role="alert"
+    ng-if="courseCount === registrant.course_update_url.result.length && courseCountErrors >0" ng-bind-html="sanitizeAppHTML(error)">
+  </div>
+  <pre uib-collapse="collapseLecturerUpdateResults">{{registrant.course_update_url.result | json}}</pre>
+</div>
+</div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Associate Lecturers With Courses
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="courseAssociateLecturerUpdateURLRegistration"
+    ng-submit="submitRegistrationUrl(courseAssociateLecturerUpdateURLRegistration, school.course_associate_lecturer_update_url)">
+    <div class="form-group">
+      <p class="help-block text-danger">
+        <button type="submit" class="btn btn-sm btn-success"  ng-dblclick="false"
+        ng-disabled="courseAssociateLecturerUpdateURLRegistration.$submitted &&
+        courseAssociateLecturerCount<registrant.course_associate_lecturer_update_url.result.length">Run Course Associate Lecturers(Update) Registration</button>
+        <p>
+          Note This API Should Return both course code and and an array Of lecturers taking it
+        </p>
+      </p>
+    </div>
+  </form>
+  <div class="col-md-12" ng-if="registrant.course_associate_lecturer_update_url.result">
+    <p>
+      Course Update API Results =>JSON Array ({{registrant.course_associate_lecturer_update_url.result.length}}) Courses
+      <span class="label label-info">{{courseAssociateLecturerCount}} / {{registrant.course_associate_lecturer_update_url.result.length}} Requests Finished</span>
+      <span class="label label-success">{{courseAssociateLecturerCountSuccess}} Successful Requests</span>
+      <span class="label label-danger">{{courseAssociateLecturerCountErrors}} Failed Requests (Try To Enter The Failed Entries Manually...)</span>
+    </p>
+    <p ng-if="courseAssociateLecturerCountSuccess >0">
+      See School <a href="accounts.schools.show({schoolId: schoolID})">Profile</a>
+    </p>
+    <p class="text-left">
+      <button class="btn btn-xs btn-info" ng-click="collapseCourseAssociateLecturersUpdateResults=!collapseCourseAssociateLecturersUpdateResults"
+      role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+    </p>
+    <div class="alert alert-danger" role="alert"
+    ng-if="courseAssociateLecturerCount === registrant.course_associate_lecturer_update_url.result.length && courseAssociateLecturerCountErrors >0"
+    ng-bind-html="sanitizeAppHTML(error)">
+  </div>
+  <pre uib-collapse="collapseCourseAssociateLecturersUpdateResults">{{registrant.course_associate_lecturer_update_url.result | json}}</pre>
+</div>
+</div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Associate Students With Courses
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" name="courseAssociateStudentUpdateURLRegistration"
+    ng-submit="submitRegistrationUrl(courseAssociateStudentUpdateURLRegistration, school.course_associate_student_update_url)">
+    <div class="form-group">
+      <p class="help-block text-danger">
+        <button type="submit" class="btn btn-sm btn-success"  ng-dblclick="false"
+        ng-disabled="courseAssociateStudentUpdateURLRegistration.$submitted &&
+        courseAssociateStudentCount<registrant.course_associate_student_update_url.result.length">Run Course Associate Students(Update) Registration</button>
+        <p>
+          Note This API Should Return both course code and and an array Of students taking it
+        </p>
+      </p>
+    </div>
+  </form>
+  <div class="col-md-12" ng-if="registrant.course_associate_student_update_url.result">
+    <p>
+      Course Update API Results =>JSON Array ({{registrant.course_associate_student_update_url.result.length}}) Courses
+      <span class="label label-info">{{courseAssociateStudentCount}} / {{registrant.course_associate_student_update_url.result.length}} Requests Finished</span>
+      <span class="label label-success">{{courseAssociateStudentCountSuccess}} Successful Requests</span>
+      <span class="label label-danger">{{courseAssociateStudentCountErrors}} Failed Requests (Try To Enter The Failed Entries Manually...)</span>
+    </p>
+    <p ng-if="courseAssociateStudentCountSuccess >0">
+      See School <a href="accounts.schools.show({schoolId: schoolID})">Profile</a>
+    </p>
+    <p class="text-left">
+      <button class="btn btn-xs btn-info" ng-click="collapseCourseAssociateStudentsUpdateResults=!collapseCourseAssociateStudentsUpdateResults"
+      role="button">Show/Hide Results</button> (Currently Results Only Supported In Raw Format)
+    </p>
+    <div class="alert alert-danger" role="alert"
+    ng-if="courseAssociateStudentCount === registrant.course_associate_student_update_url.result.length && courseAssociateStudentCountErrors >0"
+    ng-bind-html="sanitizeAppHTML(error)">
+  </div>
+  <pre uib-collapse="collapseCourseAssociateStudentsUpdateResults">{{registrant.course_associate_student_update_url.result | json}}</pre>
+</div>
+</div>
+</div>
+<div class="col-xs-12" ng-if="school.api_base_url
+&& school.admin_verification_url && school.student_updated_url
+&& school.course_update_url  && school.course_update_url ">
+Welcome
+</div>

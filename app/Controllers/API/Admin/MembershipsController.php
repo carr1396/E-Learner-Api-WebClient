@@ -235,7 +235,9 @@ class MembershipsController extends BaseController
                 $data['error'] = 'You Have Neither Specified A Student Nor A Lecturer ID You Need To Specify Either Or Both To Register';
                 return $this->jsonRender->render($response, 400, $data);
             }
-            $username   = substr($email, 0, strpos($email, '@')).''.($student_id?:$lecturer_id);
+            $username   = substr($email, 0, strpos($email, '@'));
+            $username  = preg_replace("/\W|_/", '', $username);
+            $username = $username.''.($student_id?:$lecturer_id);
             $password   = $username.''.time();
             $user = null;
             if(!$exists)

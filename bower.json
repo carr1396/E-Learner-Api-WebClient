@@ -40,7 +40,8 @@
     "angular-local-storage": "^0.2.7",
     "angular-bootstrap": "^1.2.5",
     "isteven-angular-multiselect": "https://github.com/isteven/angular-multi-select.git#^4.0.0",
-    "angular-multi-chk": "*"
+    "angular-multi-chk": "*",
+    "angular-ui-validate": "^1.2.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

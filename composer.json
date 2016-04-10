@@ -11,7 +11,8 @@
         "alexgarrett/violin": "^2.2",
         "slim/flash": "^0.1.0",
         "slim/http-cache": "^0.3.0",
-        "lcobucci/jwt": "^3.1"
+        "lcobucci/jwt": "^3.1",
+        "tuupola/cors-middleware": "dev-master"
     },
     "license": "MIT",
     "authors": [

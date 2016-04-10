@@ -17,7 +17,8 @@ class School extends Eloquent
 
     protected $fillable =['name', 'description', 'abbrev', 'description', 'location', 'identifier',
         'longitude', 'latitude', 'private', 'phone', 'email', 'other_contact', 'country', 'user_id',
-        'api_base_url', 'admin_verification_url', 'student_update_url', 'course_update_url' ];
+        'api_base_url', 'admin_verification_url', 'student_update_url', 'course_update_url', 
+        'course_associate_lecturer_update_url', 'course_associate_student_update_url' ];
 
 
     public function creator()

@@ -9,7 +9,14 @@
         method: 'PUT', // this method issues a PUT request,
         isArray: false
       },
-
+      updateAPISettings: {
+        method: 'PUT', // this method issues a PUT request,
+        isArray: false,
+        controller:'api_settings',
+        params:{
+          id: '@id'
+        }
+      },
       // changePassword: {
       //   method: 'PUT',
       //   params: {

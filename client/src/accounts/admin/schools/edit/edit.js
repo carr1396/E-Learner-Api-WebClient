@@ -3,7 +3,8 @@
   angular.module(
              'leanerAccountAdministrationSchoolModuleEdit',
              [
-               'leanerAccountAdministrationSchoolModuleEditRegistrationManual'
+               'leanerAccountAdministrationSchoolModuleEditRegistrationManual',
+               'leanerAccountAdministrationSchoolModuleEditRegistrationAPI'
              ])
       .controller(
           'SchoolAdminEditCtrl',
@@ -76,12 +77,63 @@
         'School',
         '$state',
         '$stateParams',
-        function($scope, Authentication, School, $state, $stateParams) {
+        '$http',
+        '$q',
+        'Toastr',
+        'Helpers',
+        function($scope, Authentication, School, $state, $stateParams, $http,
+                 $q, Toastr, Helpers) {
           $scope.getCurrentUser = Authentication.getCurrentUser;
+          $scope.schoolID = $stateParams.schoolId;
           if ($state.params.schoolId) {
-            $scope.school =
-                $scope.school || School.get({id : $state.params.schoolId});
+            $scope.school = $scope.school || $scope.$parent.school ||
+                            School.get({id : $state.params.schoolId});
           }
+          $scope.verifyAPIURLExists = function verifyAPIURLExists(url) {
+            if (url && url.length > 0) {
+              // console.log(url);
+              var defered = $q.defer();
+              $http.get(url,
+                        {
+                          transformRequest : angular.identity,
+                          headers : {'Authorization' : undefined}
+                        })
+                  .then(
+                      function successCallback(response) {
+                        // console.log(response);
+                        if (!response.data || response.status === -1) {
+                          defered.reject(false);
+                        }
+                        if (response.data && response.status === 200) {
+                          // TODO support other status codes that may be okay
+                          defered.resolve(true);
+                        }
+                      },
+                      function errorCallback(response) {
+                        // console.log(response);
+                        defered.reject(false);
+                      });
+              return defered.promise;
+            }
+            return false;
+          };
+
+          $scope.updateAPISettings = function updateAPISettings(form) {
+            if (form.$valid) {
+              // http://192.168.10.101:3000/api/v1
+              $http.put('/api/v1/schools/' + $scope.schoolID + '/api_settings',
+                        $scope.school)
+                  .then(function(value) {
+                    if (!value.data.id) {
+                      Helpers.displayErrors($scope, value.data, Toastr);
+                    } else {
+                      Toastr.success('API Seetings Set', 'Success');
+                    }
+                  });
+            } else {
+              console.log('Invalid');
+            }
+          };
         }
       ]);
 

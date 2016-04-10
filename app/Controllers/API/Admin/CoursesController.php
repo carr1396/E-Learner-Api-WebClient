@@ -7,7 +7,9 @@
  */
 
 namespace Learner\Controllers\API\Admin;
+use Illuminate\Database\QueryException;
 use Learner\Models\Course;
+use Learner\Models\Membership;
 use Learner\Validation\CourseValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -81,6 +83,222 @@ class CoursesController extends Controller
             return $response;
         }
         return $response->withJson(Course::with('added')->with('school')->with('categories')->where('id', $args['id'])->first());
+
+    }
+
+    public function lecturersAdd(Request $request, Response $response, $args){
+        $this->jsonRequest->setRequest($request);
+        $data = $this->jsonRequest->getRequestParams();
+        if(count($data)<=0)
+        {
+            $data['code']=400;
+            $data['success']=false;
+            $data['error'] = 'Post Sent Without Body';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        $school_id = isset($data['schoolID']) ? $data['schoolID'] : null;
+        if (is_null($school_id)) {
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'You Did Not Specify The school To Register For';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+
+        $course_identifier = isset($args['id'])?isset($args['id']):null;
+        $course = null;
+        $code   = isset($data['code'])?$data['code']:null;
+        if (is_null($course_identifier)){
+            if(is_null($code)){
+                $data['code'] = 400;
+                $data['success'] = false;
+                $data['error'] = 'You Did Not Specify Course Code';
+                $response = $this->jsonRender->render($response, 400, $data);
+                return $response;
+            }
+            $course = Course::where('code', $code)->where('school_id', $school_id)->first();
+
+            if (is_null($course)){
+                $data['code'] = 400;
+                $data['success'] = false;
+                $data['error'] = 'Course Could Not Be Found Recheck your input or check if You Have Registered This Course. And Try Adding It Manually';
+                $response = $this->jsonRender->render($response, 400, $data);
+                return $response;
+            }
+
+            $course_identifier = $course->id;
+        }else{
+            $course = Course::where('id', $course_identifier)->where('school_id', $school_id)->first();
+        }
+        if (is_null($course_identifier)){
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'You Did Not Specify Course Code OR ID';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+
+        $lecturers = isset($data['lecturers'])?$data['lecturers']:[];
+        $users =[];
+        foreach ($lecturers as $s){
+            $u = Membership::where('lecturer_id', $s['lecturer_id'])->where('school_id', $school_id)->first();
+            if(!is_null($u)){
+                array_push($users, $u);
+            }
+        }
+
+        if (count($lecturers)<=0){
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'No Lecturers Found To Add To Course';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        $user = $this->auth->user();
+        $attachments = $course->lecturers()->get();
+        $errors = [];
+        for ($i=0; $i<count($users); $i++){
+            if (count($attachments)>0){
+
+            }
+            try{
+                $course->lecturers()->attach([$users[$i]->user_id =>['added_id'=>$user->id]]);
+            }catch(QueryException $e)
+            {
+                if ($e->getCode()==23000){
+                    $data=array();
+                    $data['code']=400;
+                    $data['success']=false;
+                    $data['error'] = 'Registration Error!!';
+                    array_push($errors, ' Lecturer ('.$users[$i]->lecturer_id.') Already Taking Course');
+                }else{
+                    $data=array();
+                    $data['code']=400;
+                    $data['success']=false;
+                    $data['error'] = 'Registration Error!!!';
+                    array_push($errors, 'Something Went Wrong When Attaching Lecturer  ('.$users[$i]->lecturer_id.')');
+                }
+            }
+
+        }
+
+
+        if(count($errors)>0){
+            $data['error'] = 'Registration Error!!!';
+            $data['errors']=$errors;
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        return $response->withJson(Course::with('lecturers')->where('id', $course->id)->first());
+
+    }
+
+    public function subscriptions(Request $request, Response $response, $args){
+        $this->jsonRequest->setRequest($request);
+        $data = $this->jsonRequest->getRequestParams();
+        if(count($data)<=0)
+        {
+            $data['code']=400;
+            $data['success']=false;
+            $data['error'] = 'Post Sent Without Body';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        $school_id = isset($data['schoolID']) ? $data['schoolID'] : null;
+        if (is_null($school_id)) {
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'You Did Not Specify The school To Register For';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+
+        $course_identifier = isset($args['id'])?isset($args['id']):null;
+        $course = null;
+        $code   = isset($data['code'])?$data['code']:null;
+        if (is_null($course_identifier)){
+            if(is_null($code)){
+                $data['code'] = 400;
+                $data['success'] = false;
+                $data['error'] = 'You Did Not Specify Course Code';
+                $response = $this->jsonRender->render($response, 400, $data);
+                return $response;
+            }
+            $course = Course::where('code', $code)->where('school_id', $school_id)->first();
+
+            if (is_null($course)){
+                $data['code'] = 400;
+                $data['success'] = false;
+                $data['error'] = 'Course Could Not Be Found Recheck your input or check if You Have Registered This Course. And Try Adding It Manually';
+                $response = $this->jsonRender->render($response, 400, $data);
+                return $response;
+            }
+
+            $course_identifier = $course->id;
+        }else{
+            $course = Course::where('id', $course_identifier)->where('school_id', $school_id)->first();
+        }
+        if (is_null($course_identifier)){
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'You Did Not Specify Course Code OR ID';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+
+        $students = isset($data['students'])?$data['students']:[];
+        $users =[];
+        foreach ($students as $s){
+            $u = Membership::where('student_id', $s['student_id'])->where('school_id', $school_id)->first();
+            if(!is_null($u)){
+                array_push($users, $u);
+            }
+        }
+
+        if (count($students)<=0){
+            $data['code'] = 400;
+            $data['success'] = false;
+            $data['error'] = 'No Students Found To Add To Course';
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        $user = $this->auth->user();
+        $attachments = $course->students()->get();
+        $errors = [];
+        for ($i=0; $i<count($users); $i++){
+            if (count($attachments)>0){
+
+            }
+            try{
+                $course->students()->attach([$users[$i]->user_id =>['added_id'=>$user->id]]);
+            }catch(QueryException $e)
+            {
+                if ($e->getCode()==23000){
+                    $data=array();
+                    $data['code']=400;
+                    $data['success']=false;
+                    $data['error'] = 'Registration Error!!';
+                    array_push($errors, ' Student ('.$users[$i]->student_id.') Already Taking Course');
+                }else{
+                    $data=array();
+                    $data['code']=400;
+                    $data['success']=false;
+                    $data['error'] = 'Registration Error!!!';
+                    array_push($errors, 'Something Went Wrong When Attaching Student  ('.$users[$i]->student_id.')');
+                }
+            }
+
+        }
+
+
+        if(count($errors)>0){
+            $data['error'] = 'Registration Error!!!';
+            $data['errors']=$errors;
+            $response = $this->jsonRender->render($response, 400, $data);
+            return $response;
+        }
+        return $response->withJson(Course::with('students')->where('id', $course->id)->first());
 
     }
     public function update(Request $request, Response $response, $args){
